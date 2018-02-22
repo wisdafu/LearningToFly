@@ -6,7 +6,8 @@
 #
 #    http://shiny.rstudio.com/
 #
-#   Aaron Struck - CS424U
+#   Aaron Struck   - CS424 - Undergraduate
+#   Chris Janowski - CS424 - Undergraduate
 #
 
 ## app.R ##
