@@ -20,12 +20,20 @@ ui <- dashboardPage(
   dashboardHeader(),
   dashboardSidebar(
     sidebarMenu(
+      menuItem("Main", tabName = "mainTab", icon = icon("dashboard"))
     )
   ),
+  
   dashboardBody(
-    
+    tabItems(
+      tabItem(tabName = "mainTab",
+              fluidRow( #cholera Tab
+                
+              )
+      )
     )
     )
+)
 
 server <- function(input, output) { 
   
