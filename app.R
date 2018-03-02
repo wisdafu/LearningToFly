@@ -10,12 +10,39 @@
 #   Chris Janowski - CS424 - Undergraduate
 #
 
-## app.R ##
+#
+# Import libraries
+#
 library(shiny)
 library(shinydashboard)
 library(ggplot2)
+library(DT)
+library(leaflet)
+library(plotly)
 
-#Shiny Dashboard
+#
+# Read in data for January
+# 
+# For some weird reason, there exists a column called 'X' 
+# with no data fields... So remove it via NULL
+#
+# Verify that flight date is type data and not string
+#
+
+januaryFlightData <- read.table(file = "january.csv", sep = ",", header = TRUE)
+januaryFlightData$X <- NULL
+januaryFlightData$FL_DATE <- as.Date(januaryFlightData$FL_DATE, "%Y-%m-%d")
+
+#
+# NOTE: Airport IDs
+#   - Midway = 13232
+#   - O'Hare = 13930
+#
+
+#
+# Shiny Dashboard
+#
+
 ui <- dashboardPage(
   dashboardHeader(),
   dashboardSidebar(
@@ -27,8 +54,7 @@ ui <- dashboardPage(
   dashboardBody(
     tabItems(
       tabItem(tabName = "mainTab",
-              fluidRow( #cholera Tab
-                
+              fluidRow( 
               )
       )
     )
