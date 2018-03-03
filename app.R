@@ -31,18 +31,20 @@ januaryFlightData$X <- NULL
 januaryFlightData$FL_DATE <- as.Date(januaryFlightData$FL_DATE, "%Y-%m-%d")
 
 #
-# Reformat time data
-# e.g. 533 to 05:33
+# Reformat Departure and Arrival time data
+# e.g. 1    to 00:01
+# e.g. 533  to 05:33
 # e.g. 2232 to 22:32
 #
-januaryFlightData$DEP_TIME <- sprintf("%04d", as.integer(januaryFlightData$DEP_TIME))
+januaryFlightData$DEP_TIME <- sprintf("%04d", januaryFlightData$DEP_TIME)
+januaryFlightData$DEP_TIME <- as.POSIXct(januaryFlightData$DEP_TIME,tz="","%H%M")
+januaryFlightData$DEP_TIME <- format(januaryFlightData$DEP_TIME, "%H:%M")
 
-#
-#TO-FUCKING-DO: ADD A FUCKING : IN THE MIDDLE OF THE STRING HHMM,
-#               THEN CONVERT TO HOUR MIN IN NEXT LINE
-#
+januaryFlightData$ARR_TIME <- sprintf("%04d", januaryFlightData$ARR_TIME)
+januaryFlightData$ARR_TIME <- as.POSIXct(januaryFlightData$ARR_TIME,tz="","%H%M")
+januaryFlightData$ARR_TIME <- format(januaryFlightData$ARR_TIME, "%H:%M")
 
-januaryFlightData$DEP_TIME <- strftime(januaryFlightData$DEP_TIME,"%H:%M")
+
 
 
 februaryFlightData <- read.table(file = "february.csv", sep = ",", header = TRUE)
