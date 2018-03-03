@@ -36,6 +36,7 @@ januaryFlightData$FL_DATE <- as.Date(januaryFlightData$FL_DATE, "%Y-%m-%d")
 # e.g. 533  to 05:33
 # e.g. 2232 to 22:32
 #
+
 januaryFlightData$DEP_TIME <- sprintf("%04d", januaryFlightData$DEP_TIME)
 januaryFlightData$DEP_TIME <- as.POSIXct(januaryFlightData$DEP_TIME,tz="","%H%M")
 januaryFlightData$DEP_TIME <- format(januaryFlightData$DEP_TIME, "%H:%M")
@@ -146,20 +147,27 @@ ui <- dashboardPage(
   
   dashboardBody(
     tabItems(
+      
       tabItem(tabName = "ohareTab", icon=icon("plane"),
-              fluidRow( 
-              )
-          ),
+                fluidRow( 
+                  box(title = "O'Hare Airline Data as Table", solidHeader = TRUE, status = "primary", width = 12, dataTableOutput("ohareAirlinesTable")
+                  )
+                )
+            ),
+      
       tabItem(tabName = "midwayTab", icon=icon("plane"),
-              fluidRow(
-                
+                fluidRow(
+                  box(title = "Midway Airline Data as Table", solidHeader = TRUE, status = "primary", width = 12, dataTableOutput("midwayAirlinesTable")
+                )
               )
-              )
+            )
     )
   )
 )
 
 server <- function(input, output) { 
+  output$ohareAirlinesTable <- DT::renderDataTable(ohareAirlines, server = TRUE, options = list(pageLength = 6, lengthChange = FALSE, searching = FALSE))
+  output$midwayAirlinesTable <- DT::renderDataTable(midwayAirlines, server = TRUE, options = list(pageLength = 6, lengthChange = FALSE, searching = FALSE))
   
 }
 
