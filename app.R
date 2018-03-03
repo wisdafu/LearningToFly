@@ -29,6 +29,22 @@ library(plotly)
 januaryFlightData <- read.table(file = "january.csv", sep = ",", header = TRUE)
 januaryFlightData$X <- NULL
 januaryFlightData$FL_DATE <- as.Date(januaryFlightData$FL_DATE, "%Y-%m-%d")
+
+#
+# Reformat time data
+# e.g. 533 to 05:33
+# e.g. 2232 to 22:32
+#
+januaryFlightData$DEP_TIME <- sprintf("%04d", as.integer(januaryFlightData$DEP_TIME))
+
+#
+#TO-FUCKING-DO: ADD A FUCKING : IN THE MIDDLE OF THE STRING HHMM,
+#               THEN CONVERT TO HOUR MIN IN NEXT LINE
+#
+
+januaryFlightData$DEP_TIME <- strftime(januaryFlightData$DEP_TIME,"%H:%M")
+
+
 februaryFlightData <- read.table(file = "february.csv", sep = ",", header = TRUE)
 februaryFlightData$X <- NULL
 februaryFlightData$FL_DATE <- as.Date(februaryFlightData$FL_DATE, "%Y-%m-%d")
@@ -62,6 +78,7 @@ novemberFlightData$FL_DATE <- as.Date(novemberFlightData$FL_DATE, "%Y-%m-%d")
 decemberFlightData <- read.table(file = "december.csv", sep = ",", header = TRUE)
 decemberFlightData$X <- NULL
 decemberFlightData$FL_DATE <- as.Date(decemberFlightData$FL_DATE, "%Y-%m-%d")
+
 
 #
 # NOTE: Airport IDs
@@ -101,7 +118,7 @@ ohareDestTotal <- nrow(ohareDest)
 ohareOriginTotal <- nrow(ohareOrigin)
 
 # TODO: Get each day of the week
-weekdays(as.Date('2017-01-01','%Y-%m-%d'))
+#weekdays(as.Date('2017-01-01','%Y-%m-%d'))
 ohareDestMonday <- subset(ohareDest, weekdays(as.Date(ohareDest$FL_DATE,"%Y-%m-%d")) == "Monday")
 ohareDestTuesday <- subset(ohareDest, weekdays(as.Date(ohareDest$FL_DATE,"%Y-%m-%d")) == "Tuesday")
 ohareDestWednesday <- subset(ohareDest, weekdays(as.Date(ohareDest$FL_DATE,"%Y-%m-%d")) == "Wednesday")
