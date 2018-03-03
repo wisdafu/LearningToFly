@@ -1,14 +1,10 @@
+#   
+#   CS 424 Spring 2018 UIC
+#   Project 2 - Learning to Fly
 #
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-#   Aaron Struck   - CS424 - Undergraduate
-#   Chris Janowski - CS424 - Undergraduate
-#
+#   Aaron Struck    - Undergraduate
+#   Chris Janowski  - Undergraduate
+#   Steve Stranczek - Undergraduate
 
 #
 # Import libraries
@@ -39,26 +35,39 @@ januaryFlightData$FL_DATE <- as.Date(januaryFlightData$FL_DATE, "%Y-%m-%d")
 #   - O'Hare = 13930
 #
 
+# Get subsets for midway and o'hare
+midwayDest <- subset(januaryFlightData, januaryFlightData$DEST_AIRPORT_ID == "13232")
+midwayOrigin <- subset(januaryFlightData, januaryFlightData$ORIGIN_AIRPORT_ID == "13232")
+
+ohareDest <- subset(januaryFlightData, januaryFlightData$DEST_AIRPORT_ID == "13930")
+ohareOrigin <- subset(januaryFlightData, januaryFlightData$ORIGIN_AIRPORT_ID == "13930")
+
+# Get each day of the week
+#e.g.
+weekdays(as.Date('2017-01-01','%Y-%m-%d'))
+
 #
 # Shiny Dashboard
 #
 
 ui <- dashboardPage(
-  dashboardHeader(),
+  # Create header and sidebar
+  dashboardHeader(title = "CS 424 - Project 2"),
+  
   dashboardSidebar(
     sidebarMenu(
       menuItem("Main", tabName = "mainTab", icon = icon("dashboard"))
-    )
-  ),
+    ) #end sidebarMenu
+  ), #end dashboardSidebar
   
   dashboardBody(
     tabItems(
-      tabItem(tabName = "mainTab",
+      tabItem(tabName = "mainTab", icon=icon("home"),
               fluidRow( 
               )
       )
     )
-    )
+  )
 )
 
 server <- function(input, output) { 
