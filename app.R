@@ -73,26 +73,32 @@ decemberFlightData$FL_DATE <- as.Date(decemberFlightData$FL_DATE, "%Y-%m-%d")
 januaryFlightData$DEP_TIME <- sprintf("%04d", januaryFlightData$DEP_TIME)
 januaryFlightData$DEP_TIME <- as.POSIXct(januaryFlightData$DEP_TIME,tz="","%H%M")
 januaryFlightData$DEP_TIME <- format(januaryFlightData$DEP_TIME, "%H:%M")
+januaryFlightData$DEP_TIME12 <- format(strptime(januaryFlightData$DEP_TIME, format='%H:%M'), '%I:%M %p')
 
 januaryFlightData$ARR_TIME <- sprintf("%04d", januaryFlightData$ARR_TIME)
 januaryFlightData$ARR_TIME <- as.POSIXct(januaryFlightData$ARR_TIME,tz="","%H%M")
 januaryFlightData$ARR_TIME <- format(januaryFlightData$ARR_TIME, "%H:%M")
+januaryFlightData$ARR_TIME12 <- format(strptime(januaryFlightData$ARR_TIME, format='%H:%M'), '%I:%M %p')
 
 februaryFlightData$DEP_TIME <- sprintf("%04d", februaryFlightData$DEP_TIME)
 februaryFlightData$DEP_TIME <- as.POSIXct(februaryFlightData$DEP_TIME,tz="","%H%M")
 februaryFlightData$DEP_TIME <- format(februaryFlightData$DEP_TIME, "%H:%M")
+februaryFlightData$DEP_TIME12 <- format(strptime(februaryFlightData$DEP_TIME, format='%H:%M'), '%I:%M %p')
 
 februaryFlightData$ARR_TIME <- sprintf("%04d", februaryFlightData$ARR_TIME)
 februaryFlightData$ARR_TIME <- as.POSIXct(februaryFlightData$ARR_TIME,tz="","%H%M")
 februaryFlightData$ARR_TIME <- format(februaryFlightData$ARR_TIME, "%H:%M")
+februaryFlightData$ARR_TIME12 <- format(strptime(februaryFlightData$ARR_TIME, format='%H:%M'), '%I:%M %p')
 
 marchFlightData$DEP_TIME <- sprintf("%04d", marchFlightData$DEP_TIME)
 marchFlightData$DEP_TIME <- as.POSIXct(marchFlightData$DEP_TIME,tz="","%H%M")
 marchFlightData$DEP_TIME <- format(marchFlightData$DEP_TIME, "%H:%M")
+marchFlightData$DEP_TIME12 <- format(strptime(marchFlightData$DEP_TIME, format='%H:%M'), '%I:%M %p')
 
 marchFlightData$ARR_TIME <- sprintf("%04d", marchFlightData$ARR_TIME)
 marchFlightData$ARR_TIME <- as.POSIXct(marchFlightData$ARR_TIME,tz="","%H%M")
 marchFlightData$ARR_TIME <- format(marchFlightData$ARR_TIME, "%H:%M")
+marchFlightData$ARR_TIME12 <- format(strptime(marchFlightData$ARR_TIME, format='%H:%M'), '%I:%M %p')
 
 #
 # NOTE: Airport IDs
