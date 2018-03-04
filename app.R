@@ -249,11 +249,36 @@ ohareOriginSaturday <- subset(ohareOrigin, weekdays(as.Date(ohareOrigin$FL_DATE,
 ohareDestSunday <- subset(ohareDest, weekdays(as.Date(ohareDest$FL_DATE,"%Y-%m-%d")) == "Sunday")
 ohareOriginSunday <- subset(ohareOrigin, weekdays(as.Date(ohareOrigin$FL_DATE,"%Y-%m-%d")) == "Sunday")
 
+# Midway
+midwayDestMonday <- subset(midwayDest, weekdays(as.Date(midwayDest$FL_DATE,"%Y-%m-%d")) == "Monday")
+midwayOriginMonday <- subset(midwayOrigin, weekdays(as.Date(midwayOrigin$FL_DATE,"%Y-%m-%d")) == "Monday")
 
-# Create single file to encapsulate days of week for ohare
+midwayDestTuesday <- subset(midwayDest, weekdays(as.Date(midwayDest$FL_DATE,"%Y-%m-%d")) == "Tuesday")
+midwayOriginTuesday <- subset(midwayOrigin, weekdays(as.Date(midwayOrigin$FL_DATE,"%Y-%m-%d")) == "Tuesday")
+
+midwayDestWednesday <- subset(midwayDest, weekdays(as.Date(midwayDest$FL_DATE,"%Y-%m-%d")) == "Wednesday")
+midwayOriginWednesday <- subset(midwayOrigin, weekdays(as.Date(midwayOrigin$FL_DATE,"%Y-%m-%d")) == "Wednesday")
+
+midwayDestThursday <- subset(midwayDest, weekdays(as.Date(midwayDest$FL_DATE,"%Y-%m-%d")) == "Thursday")
+midwayOriginThursday <- subset(midwayOrigin, weekdays(as.Date(midwayOrigin$FL_DATE,"%Y-%m-%d")) == "Thursday")
+
+midwayDestFriday <- subset(midwayDest, weekdays(as.Date(midwayDest$FL_DATE,"%Y-%m-%d")) == "Friday")
+midwayOriginFriday <- subset(midwayOrigin, weekdays(as.Date(midwayOrigin$FL_DATE,"%Y-%m-%d")) == "Friday")
+
+midwayDestSaturday <- subset(midwayDest, weekdays(as.Date(midwayDest$FL_DATE,"%Y-%m-%d")) == "Saturday")
+midwayOriginSaturday <- subset(midwayOrigin, weekdays(as.Date(midwayOrigin$FL_DATE,"%Y-%m-%d")) == "Saturday")
+
+midwayDestSunday <- subset(midwayDest, weekdays(as.Date(midwayDest$FL_DATE,"%Y-%m-%d")) == "Sunday")
+midwayOriginSunday <- subset(midwayOrigin, weekdays(as.Date(midwayOrigin$FL_DATE,"%Y-%m-%d")) == "Sunday")
+
+# Create single file for both ohare and midway to encapsulate days of week for ohare
 ohareDayData <- data.frame(matrix(ncol = 3, nrow = 0))
 x <- c("Day", "Departures", "Arrivals")
 colnames(ohareDayData) <- x
+
+midwayDayData <- data.frame(matrix(ncol = 3, nrow = 0))
+x <- c("Day", "Departures", "Arrivals")
+colnames(midwayDayData) <- x
 
 tempArr <- nrow(ohareDestMonday)
 tempDep  <- nrow(ohareOriginMonday)
@@ -282,6 +307,35 @@ ohareDayData[nrow(ohareDayData) + 1, ] <- c( "Saturday", tempDep,tempArr)
 tempArr <- nrow(ohareDestSunday)
 tempDep  <- nrow(ohareOriginSunday)
 ohareDayData[nrow(ohareDayData) + 1, ] <- c( "Sunday", tempDep,tempArr)
+
+# Midway day data
+tempArr <- nrow(midwayDestMonday)
+tempDep  <- nrow(midwayOriginMonday)
+midwayDayData[nrow(midwayDayData) + 1, ] <- c( "Monday", tempDep,tempArr)
+
+tempArr <- nrow(midwayDestTuesday)
+tempDep  <- nrow(midwayOriginTuesday)
+midwayDayData[nrow(midwayDayData) + 1, ] <- c( "Tuesday", tempDep,tempArr)
+
+tempArr <- nrow(midwayDestWednesday)
+tempDep  <- nrow(midwayOriginWednesday)
+midwayDayData[nrow(midwayDayData) + 1, ] <- c( "Wednesday", tempDep,tempArr)
+
+tempArr <- nrow(midwayDestThursday)
+tempDep  <- nrow(midwayOriginThursday)
+midwayDayData[nrow(midwayDayData) + 1, ] <- c( "Thursday", tempDep,tempArr)
+
+tempArr <- nrow(midwayDestFriday)
+tempDep  <- nrow(midwayOriginFriday)
+midwayDayData[nrow(midwayDayData) + 1, ] <- c( "Friday", tempDep,tempArr)
+
+tempArr <- nrow(midwayDestSaturday)
+tempDep  <- nrow(midwayOriginSaturday)
+midwayDayData[nrow(midwayDayData) + 1, ] <- c( "Saturday", tempDep,tempArr)
+
+tempArr <- nrow(midwayDestSunday)
+tempDep  <- nrow(midwayOriginSunday)
+midwayDayData[nrow(midwayDayData) + 1, ] <- c( "Sunday", tempDep,tempArr)
 
 #
 # Shiny Dashboard
@@ -312,6 +366,10 @@ ui <- dashboardPage(
                 ),
                 box(title = "O'Hare Airline Arrival Data as Pie Chart", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("ohareAirlinesArrivePie")
                 )
+              ),
+              fluidRow(
+                box(title = "O'Hare Day Airline Data as Table", solidHeader = TRUE, status = "primary", width = 12, dataTableOutput("ohareDayDataTable")
+                )
               )
             ),
       
@@ -325,6 +383,10 @@ ui <- dashboardPage(
                   ),
                   box(title = "Midway Airline Arrival Data as Pie Chart", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("midwayAirlinesArrivePie")
                   )
+              ),
+              fluidRow(
+                box(title = "Midway Day Airline Data as Table", solidHeader = TRUE, status = "primary", width = 12, dataTableOutput("midwayDayDataTable")
+                )
               )
             )
       ),
@@ -367,6 +429,8 @@ server <- function(input, output) {
   })
   
   # Tables for each day of the week for ohare and midway
+  output$ohareDayDataTable <- DT::renderDataTable(ohareDayData, server = TRUE, options = list(pageLength = 7, lengthChange = FALSE, searching = FALSE))
+  output$midwayDayDataTable <- DT::renderDataTable(midwayDayData, server = TRUE, options = list(pageLength = 7, lengthChange = FALSE, searching = FALSE))
   
 }
 
