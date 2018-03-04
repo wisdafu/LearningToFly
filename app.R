@@ -100,6 +100,78 @@ marchFlightData$ARR_TIME <- as.POSIXct(marchFlightData$ARR_TIME,tz="","%H%M")
 marchFlightData$ARR_TIME <- format(marchFlightData$ARR_TIME, "%H:%M")
 marchFlightData$ARR_TIME12 <- format(strptime(marchFlightData$ARR_TIME, format='%H:%M'), '%I:%M %p')
 
+aprilFlightData$DEP_TIME <- sprintf("%04d", aprilFlightData$DEP_TIME)
+aprilFlightData$DEP_TIME <- as.POSIXct(februaryFlightData$DEP_TIME,tz="","%H%M")
+aprilFlightData$DEP_TIME <- format(februaryFlightData$DEP_TIME, "%H:%M")
+
+aprilFlightData$ARR_TIME <- sprintf("%04d", aprilFlightData$ARR_TIME)
+aprilFlightData$ARR_TIME <- as.POSIXct(aprilFlightData$ARR_TIME,tz="","%H%M")
+aprilFlightData$ARR_TIME <- format(aprilFlightData$ARR_TIME, "%H:%M")
+
+mayFlightData$DEP_TIME <- sprintf("%04d", mayFlightData$DEP_TIME)
+mayFlightData$DEP_TIME <- as.POSIXct(mayFlightData$DEP_TIME,tz="","%H%M")
+mayFlightData$DEP_TIME <- format(mayFlightData$DEP_TIME, "%H:%M")
+
+mayFlightData$ARR_TIME <- sprintf("%04d", mayFlightData$ARR_TIME)
+mayFlightData$ARR_TIME <- as.POSIXct(mayFlightData$ARR_TIME,tz="","%H%M")
+mayFlightData$ARR_TIME <- format(mayFlightData$ARR_TIME, "%H:%M")
+
+juneFlightData$DEP_TIME <- sprintf("%04d", juneFlightData$DEP_TIME)
+juneFlightData$DEP_TIME <- as.POSIXct(juneFlightData$DEP_TIME,tz="","%H%M")
+juneFlightData$DEP_TIME <- format(juneFlightData$DEP_TIME, "%H:%M")
+
+juneFlightData$ARR_TIME <- sprintf("%04d", juneFlightData$ARR_TIME)
+juneFlightData$ARR_TIME <- as.POSIXct(juneFlightData$ARR_TIME,tz="","%H%M")
+juneFlightData$ARR_TIME <- format(juneFlightData$ARR_TIME, "%H:%M")
+
+julyFlightData$DEP_TIME <- sprintf("%04d", julyFlightData$DEP_TIME)
+julyFlightData$DEP_TIME <- as.POSIXct(julyFlightData$DEP_TIME,tz="","%H%M")
+juneFlightData$DEP_TIME <- format(julyFlightData$DEP_TIME, "%H:%M")
+
+julyFlightData$ARR_TIME <- sprintf("%04d", julyFlightData$ARR_TIME)
+julyFlightData$ARR_TIME <- as.POSIXct(julyFlightData$ARR_TIME,tz="","%H%M")
+junlyFlightData$ARR_TIME <- format(julyFlightData$ARR_TIME, "%H:%M")
+
+augustFlightData$DEP_TIME <- sprintf("%04d", augustFlightData$DEP_TIME)
+augustFlightData$DEP_TIME <- as.POSIXct(augustFlightData$DEP_TIME,tz="","%H%M")
+augustFlightData$DEP_TIME <- format(augustFlightData$DEP_TIME, "%H:%M")
+
+augustFlightData$ARR_TIME <- sprintf("%04d", augustFlightData$ARR_TIME)
+augustFlightData$ARR_TIME <- as.POSIXct(augustFlightData$ARR_TIME,tz="","%H%M")
+augustFlightData$ARR_TIME <- format(augustFlightData$ARR_TIME, "%H:%M")
+
+septemberFlightData$DEP_TIME <- sprintf("%04d", septemberFlightData$DEP_TIME)
+septemberFlightData$DEP_TIME <- as.POSIXct(septemberFlightData$DEP_TIME,tz="","%H%M")
+septemberFlightData$DEP_TIME <- format(septemberFlightData$DEP_TIME, "%H:%M")
+
+septemberFlightData$ARR_TIME <- sprintf("%04d", septemberFlightData$ARR_TIME)
+septemberFlightData$ARR_TIME <- as.POSIXct(septemberFlightData$ARR_TIME,tz="","%H%M")
+septemberFlightData$ARR_TIME <- format(septemberFlightData$ARR_TIME, "%H:%M")
+
+octoberFlightData$DEP_TIME <- sprintf("%04d", octoberFlightData$DEP_TIME)
+octoberFlightData$DEP_TIME <- as.POSIXct(octoberFlightData$DEP_TIME,tz="","%H%M")
+octoberFlightData$DEP_TIME <- format(octoberFlightData$DEP_TIME, "%H:%M")
+
+octoberFlightData$ARR_TIME <- sprintf("%04d", octoberFlightData$ARR_TIME)
+octoberFlightData$ARR_TIME <- as.POSIXct(octoberFlightData$ARR_TIME,tz="","%H%M")
+octoberFlightData$ARR_TIME <- format(octoberFlightData$ARR_TIME, "%H:%M")
+
+novemberFlightData$DEP_TIME <- sprintf("%04d", novemberFlightData$DEP_TIME)
+novemberFlightData$DEP_TIME <- as.POSIXct(novemberFlightData$DEP_TIME,tz="","%H%M")
+novemberFlightData$DEP_TIME <- format(novemberFlightData$DEP_TIME, "%H:%M")
+
+novemberFlightData$ARR_TIME <- sprintf("%04d", novemberFlightData$ARR_TIME)
+novemberFlightData$ARR_TIME <- as.POSIXct(novemberFlightData$ARR_TIME,tz="","%H%M")
+novemberFlightData$ARR_TIME <- format(novemberFlightData$ARR_TIME, "%H:%M")
+
+decemberFlightData$DEP_TIME <- sprintf("%04d", decemberFlightData$DEP_TIME)
+decemberFlightData$DEP_TIME <- as.POSIXct(decemberFlightData$DEP_TIME,tz="","%H%M")
+decemberFlightData$DEP_TIME <- format(decemberFlightData$DEP_TIME, "%H:%M")
+
+decemberFlightData$ARR_TIME <- sprintf("%04d", decemberFlightData$ARR_TIME)
+decemberFlightData$ARR_TIME <- as.POSIXct(decemberFlightData$ARR_TIME,tz="","%H%M")
+decemberFlightData$ARR_TIME <- format(decemberFlightData$ARR_TIME, "%H:%M")
+
 #
 # NOTE: Airport IDs
 #   - Midway = 13232
