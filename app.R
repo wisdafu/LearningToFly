@@ -209,16 +209,62 @@ midwayOriginTotal <- nrow(midwayOrigin)
 ohareDestTotal <- nrow(ohareDest)
 ohareOriginTotal <- nrow(ohareOrigin)
 
-# TODO: Get each day of the week
-#weekdays(as.Date('2017-01-01','%Y-%m-%d'))
+# Get each day of the week for ohare
 ohareDestMonday <- subset(ohareDest, weekdays(as.Date(ohareDest$FL_DATE,"%Y-%m-%d")) == "Monday")
+ohareOriginMonday <- subset(ohareOrigin, weekdays(as.Date(ohareOrigin$FL_DATE,"%Y-%m-%d")) == "Monday")
+
 ohareDestTuesday <- subset(ohareDest, weekdays(as.Date(ohareDest$FL_DATE,"%Y-%m-%d")) == "Tuesday")
+ohareOriginTuesday <- subset(ohareOrigin, weekdays(as.Date(ohareOrigin$FL_DATE,"%Y-%m-%d")) == "Tuesday")
+
 ohareDestWednesday <- subset(ohareDest, weekdays(as.Date(ohareDest$FL_DATE,"%Y-%m-%d")) == "Wednesday")
+ohareOriginWednesday <- subset(ohareOrigin, weekdays(as.Date(ohareOrigin$FL_DATE,"%Y-%m-%d")) == "Wednesday")
+
 ohareDestThursday <- subset(ohareDest, weekdays(as.Date(ohareDest$FL_DATE,"%Y-%m-%d")) == "Thursday")
+ohareOriginThursday <- subset(ohareOrigin, weekdays(as.Date(ohareOrigin$FL_DATE,"%Y-%m-%d")) == "Thursday")
+
 ohareDestFriday <- subset(ohareDest, weekdays(as.Date(ohareDest$FL_DATE,"%Y-%m-%d")) == "Friday")
+ohareOriginFriday <- subset(ohareOrigin, weekdays(as.Date(ohareOrigin$FL_DATE,"%Y-%m-%d")) == "Friday")
+
 ohareDestSaturday <- subset(ohareDest, weekdays(as.Date(ohareDest$FL_DATE,"%Y-%m-%d")) == "Saturday")
+ohareOriginSaturday <- subset(ohareOrigin, weekdays(as.Date(ohareOrigin$FL_DATE,"%Y-%m-%d")) == "Saturday")
+
 ohareDestSunday <- subset(ohareDest, weekdays(as.Date(ohareDest$FL_DATE,"%Y-%m-%d")) == "Sunday")
-  
+ohareOriginSunday <- subset(ohareOrigin, weekdays(as.Date(ohareOrigin$FL_DATE,"%Y-%m-%d")) == "Sunday")
+
+
+# Create single file to encapsulate days of week for ohare
+ohareDayData <- data.frame(matrix(ncol = 3, nrow = 0))
+x <- c("Day", "Departures", "Arrivals")
+colnames(ohareDayData) <- x
+
+tempArr <- nrow(ohareDestMonday)
+tempDep  <- nrow(ohareOriginMonday)
+ohareDayData[nrow(ohareDayData) + 1, ] <- c( "Monday", tempDep,tempArr)
+
+tempArr <- nrow(ohareDestTuesday)
+tempDep  <- nrow(ohareOriginTuesday)
+ohareDayData[nrow(ohareDayData) + 1, ] <- c( "Tuesday", tempDep,tempArr)
+
+tempArr <- nrow(ohareDestWednesday)
+tempDep  <- nrow(ohareOriginWednesday)
+ohareDayData[nrow(ohareDayData) + 1, ] <- c( "Wednesday", tempDep,tempArr)
+
+tempArr <- nrow(ohareDestThursday)
+tempDep  <- nrow(ohareOriginThursday)
+ohareDayData[nrow(ohareDayData) + 1, ] <- c( "Thursday", tempDep,tempArr)
+
+tempArr <- nrow(ohareDestFriday)
+tempDep  <- nrow(ohareOriginFriday)
+ohareDayData[nrow(ohareDayData) + 1, ] <- c( "Friday", tempDep,tempArr)
+
+tempArr <- nrow(ohareDestSaturday)
+tempDep  <- nrow(ohareOriginSaturday)
+ohareDayData[nrow(ohareDayData) + 1, ] <- c( "Saturday", tempDep,tempArr)
+
+tempArr <- nrow(ohareDestSunday)
+tempDep  <- nrow(ohareOriginSunday)
+ohareDayData[nrow(ohareDayData) + 1, ] <- c( "Sunday", tempDep,tempArr)
+
 #
 # Shiny Dashboard
 #
@@ -301,6 +347,9 @@ server <- function(input, output) {
       layout(xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
              yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
   })
+  
+  # Tables for each day of the week for ohare and midway
+  
 }
 
 shinyApp(ui, server)
