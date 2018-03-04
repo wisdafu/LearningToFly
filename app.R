@@ -152,7 +152,8 @@ ui <- dashboardPage(
   dashboardSidebar(
     sidebarMenu(
       menuItem("O'Hare", tabName = "ohareTab", icon = icon("plane")),
-      menuItem("Midway", tabName = "midwayTab", icon = icon("plane"))
+      menuItem("Midway", tabName = "midwayTab", icon = icon("plane")),
+      menuItem("About", tabName = "aboutTab", icon = icon("info"))
     ) #end sidebarMenu
   ), #end dashboardSidebar
   
@@ -184,6 +185,9 @@ ui <- dashboardPage(
                   )
               )
             )
+      ),
+      tabItem(tabName = "aboutTab", icon=icon("info")
+              
       )
   )
 )
