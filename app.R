@@ -16,6 +16,8 @@ library(ggplot2)
 library(DT)
 library(leaflet)
 library(plotly)
+library(lubridate)
+library(dplyr)
 
 #
 # Read in data for January
@@ -74,11 +76,13 @@ januaryFlightData$DEP_TIME <- sprintf("%04d", januaryFlightData$DEP_TIME)
 januaryFlightData$DEP_TIME <- as.POSIXct(januaryFlightData$DEP_TIME,tz="","%H%M")
 januaryFlightData$DEP_TIME <- format(januaryFlightData$DEP_TIME, "%H:%M")
 januaryFlightData$DEP_TIME12 <- format(strptime(januaryFlightData$DEP_TIME, format='%H:%M'), '%I:%M %p')
+januaryFlightData$DEP_HOUR <- hour(ymd_hm(paste(januaryFlightData$FL_DATE, januaryFlightData$DEP_TIME)))
 
 januaryFlightData$ARR_TIME <- sprintf("%04d", januaryFlightData$ARR_TIME)
 januaryFlightData$ARR_TIME <- as.POSIXct(januaryFlightData$ARR_TIME,tz="","%H%M")
 januaryFlightData$ARR_TIME <- format(januaryFlightData$ARR_TIME, "%H:%M")
 januaryFlightData$ARR_TIME12 <- format(strptime(januaryFlightData$ARR_TIME, format='%H:%M'), '%I:%M %p')
+januaryFlightData$ARR_HOUR <- hour(ymd_hm(paste(januaryFlightData$FL_DATE, januaryFlightData$ARR_TIME)))
 
 februaryFlightData$DEP_TIME <- sprintf("%04d", februaryFlightData$DEP_TIME)
 februaryFlightData$DEP_TIME <- as.POSIXct(februaryFlightData$DEP_TIME,tz="","%H%M")
