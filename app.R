@@ -494,7 +494,7 @@ server <- function(input, output) {
   output$midwayAirlinesTable <- DT::renderDataTable(midwayAirlines, server = TRUE, options = list(pageLength = 6, lengthChange = FALSE, searching = FALSE))
   output$midJanDelayTable <- DT::renderDataTable(midJanDelay, server = TRUE, options = list(pageLength = 6, lengthChange = FALSE, searching = FALSE))
   output$oJanDelayTable <- DT::renderDataTable(oJanDelay, server = TRUE, options = list(pageLength = 6, lengthChange = FALSE, searching = FALSE))
-  
+  ouptut$ohareHourlyArrTable <- DT::renderDataTable(oharear)
   # Charts for all domestic airlines (bullet point 1 cont.)
   output$ohareAirlinesDepartPie <- renderPlotly({
     plot_ly(ohareAirlines, labels = ~ohareAirlines$Carrier, values = ~ohareAirlines$Departures, type = "pie") %>%
