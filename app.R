@@ -224,10 +224,13 @@ decemberFlightData$ARR_HOUR <- hour(ymd_hm(paste(decemberFlightData$FL_DATE, dec
 # Get subsets for midway and o'hare
 midwayDest <- subset(januaryFlightData, januaryFlightData$DEST_AIRPORT_ID == "13232")
 midwayOrigin <- subset(januaryFlightData, januaryFlightData$ORIGIN_AIRPORT_ID == "13232")
-
-
+midwayARRHourlyData <-na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
+midwayDepHourlyData <-na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
+ 
 ohareDest <- subset(januaryFlightData, januaryFlightData$DEST_AIRPORT_ID == "13930")
 ohareOrigin <- subset(januaryFlightData, januaryFlightData$ORIGIN_AIRPORT_ID == "13930")
+ohareArrHourlyData <-na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
+ohareDepHourlyData <-na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
 
 #
 # Get list and counts of all unique airlines in midway
