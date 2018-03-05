@@ -14,7 +14,6 @@ library(shiny)
 library(shinydashboard)
 library(ggplot2)
 library(DT)
-library(leaflet)
 library(plotly)
 library(lubridate)
 library(dplyr)
@@ -415,10 +414,7 @@ ui <- dashboardPage(
                 )
               )
             )
-      ),
-      tabItem(tabName = "aboutTab", icon=icon("info")
-              
-      )
+        )
   )
 )
 
