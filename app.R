@@ -435,7 +435,7 @@ ui <- dashboardPage(
     sidebarMenu(
       menuItem("O'Hare", tabName = "ohareTab", icon = icon("plane")),
       menuItem("Midway", tabName = "midwayTab", icon = icon("plane")),
-      menuItem("About", tabName = "aboutTab", icon = icon("info"))
+      menuItem("About", icon = icon("info"), href = "http://cjanow3.people.uic.edu/project2.html")
     ) #end sidebarMenu
   ), #end dashboardSidebar
   
