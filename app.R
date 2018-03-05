@@ -297,6 +297,17 @@ midwayOriginSaturday <- subset(midwayOrigin, weekdays(as.Date(midwayOrigin$FL_DA
 midwayDestSunday <- subset(midwayDest, weekdays(as.Date(midwayDest$FL_DATE,"%Y-%m-%d")) == "Sunday")
 midwayOriginSunday <- subset(midwayOrigin, weekdays(as.Date(midwayOrigin$FL_DATE,"%Y-%m-%d")) == "Sunday")
 
+
+# get hourly data for both airports
+midwayArrHourlyData <- na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
+midwayDepHourlyData <- na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
+colnames(midwayArrHourlyData) <- c("Hour", "Number Of Flight")
+colnames(midwayDepHourlyData) <- c("Hour", "Number Of Flight")
+
+ohareArrHourlyData <- na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
+ohareDepHourlyData <- na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
+colnames(ohareArrHourlyData) <- c("Hour", "Number Of Flight")
+colnames(ohareDepHourlyData) <- c("Hour", "Number Of Flight")
 # Create single file for both ohare and midway to encapsulate days of week for ohare
 ohareDayData <- data.frame(matrix(ncol = 3, nrow = 0))
 x <- c("Day", "Departures", "Arrivals")
@@ -494,7 +505,7 @@ server <- function(input, output) {
   output$midwayAirlinesTable <- DT::renderDataTable(midwayAirlines, server = TRUE, options = list(pageLength = 6, lengthChange = FALSE, searching = FALSE))
   output$midJanDelayTable <- DT::renderDataTable(midJanDelay, server = TRUE, options = list(pageLength = 6, lengthChange = FALSE, searching = FALSE))
   output$oJanDelayTable <- DT::renderDataTable(oJanDelay, server = TRUE, options = list(pageLength = 6, lengthChange = FALSE, searching = FALSE))
-  ouptut$ohareHourlyArrTable <- DT::renderDataTable(oharear)
+
   # Charts for all domestic airlines (bullet point 1 cont.)
   output$ohareAirlinesDepartPie <- renderPlotly({
     plot_ly(ohareAirlines, labels = ~ohareAirlines$Carrier, values = ~ohareAirlines$Departures, type = "pie") %>%
