@@ -456,6 +456,9 @@ ui <- dashboardPage(
               fluidRow(
                 box(title = "O'Hare Day Airline Data as Table", solidHeader = TRUE, status = "primary", width = 12, dataTableOutput("ohareDayDataTable")
                 )
+              ),
+              fluidRow(
+                box(title = "O'Hare Delays", solidHeader = TRUE, status = "primary", width = 12, dataTableOutput("oJanDelayTable"))
               )
             ),
       
@@ -489,6 +492,7 @@ server <- function(input, output) {
   output$ohareAirlinesTable <- DT::renderDataTable(ohareAirlines, server = TRUE, options = list(pageLength = 6, lengthChange = FALSE, searching = FALSE))
   output$midwayAirlinesTable <- DT::renderDataTable(midwayAirlines, server = TRUE, options = list(pageLength = 6, lengthChange = FALSE, searching = FALSE))
   output$midJanDelayTable <- DT::renderDataTable(midJanDelay, server = TRUE, options = list(pageLength = 6, lengthChange = FALSE, searching = FALSE))
+  output$oJanDelayTable <- DT::renderDataTable(oJanDelay, server = TRUE, options = list(pageLength = 6, lengthChange = FALSE, searching = FALSE))
   
   # Charts for all domestic airlines (bullet point 1 cont.)
   output$ohareAirlinesDepartPie <- renderPlotly({
