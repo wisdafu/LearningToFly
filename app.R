@@ -297,17 +297,6 @@ midwayOriginSaturday <- subset(midwayOrigin, weekdays(as.Date(midwayOrigin$FL_DA
 midwayDestSunday <- subset(midwayDest, weekdays(as.Date(midwayDest$FL_DATE,"%Y-%m-%d")) == "Sunday")
 midwayOriginSunday <- subset(midwayOrigin, weekdays(as.Date(midwayOrigin$FL_DATE,"%Y-%m-%d")) == "Sunday")
 
-
-# get hourly data for both airports
-midwayArrHourlyData <- na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
-midwayDepHourlyData <- na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
-colnames(midwayArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(midwayDepHourlyData) <- c("Hour", "Number Of Flight")
-
-ohareArrHourlyData <- na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
-ohareDepHourlyData <- na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
-colnames(ohareArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(ohareDepHourlyData) <- c("Hour", "Number Of Flight")
 # Create single file for both ohare and midway to encapsulate days of week for ohare
 ohareDayData <- data.frame(matrix(ncol = 3, nrow = 0))
 x <- c("Day", "Departures", "Arrivals")
@@ -466,18 +455,6 @@ ui <- dashboardPage(
                 )
               ),
               fluidRow(
-                box(title = "O'Hare Airline Hourly Arrival Data as Pie Chart", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("ohareHourlyArrivalPie")
-                ),
-                box(title = "O'Hare Airline Hourly Departure Data as Pie Chart", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("ohareHourlyDeparturePie")
-                )
-              ),
-              fluidRow(
-                box(title = "O'Hare Airline Hourly Departure Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("ohareHourlyDepTable")
-                ),
-                box(title = "O'Hare Airline Hourly Arrival Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("ohareHourlyArrTable")
-                )
-              ),
-              fluidRow(
                 box(title = "O'Hare Day Airline Data as Table", solidHeader = TRUE, status = "primary", width = 12, dataTableOutput("ohareDayDataTable")
                 )
               ),
@@ -498,18 +475,6 @@ ui <- dashboardPage(
                   )
               ),
               fluidRow(
-                box(title = "Midway Airline Hourly Departure Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("midwayHourlyDepTable")
-                ),
-                box(title = "Midway Airline Hourly Arrival Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("midwayHourlyArrTable")
-                )
-              ),
-              fluidRow(
-                box(title = "Midway Airline Hourly Arrival Data as Pie Chart", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("midwayHourlyArrivalPie")
-                ),
-                box(title = "Midway Airline Hourly Departure Data as Pie Chart", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("midwayHourlyDeparturePie")
-                )
-               ),
-              fluidRow(
                 box(title = "Midway Day Airline Data as Table", solidHeader = TRUE, status = "primary", width = 12, dataTableOutput("midwayDayDataTable")
                 )
               ),
@@ -529,7 +494,7 @@ server <- function(input, output) {
   output$midwayAirlinesTable <- DT::renderDataTable(midwayAirlines, server = TRUE, options = list(pageLength = 6, lengthChange = FALSE, searching = FALSE))
   output$midJanDelayTable <- DT::renderDataTable(midJanDelay, server = TRUE, options = list(pageLength = 6, lengthChange = FALSE, searching = FALSE))
   output$oJanDelayTable <- DT::renderDataTable(oJanDelay, server = TRUE, options = list(pageLength = 6, lengthChange = FALSE, searching = FALSE))
-
+  
   # Charts for all domestic airlines (bullet point 1 cont.)
   output$ohareAirlinesDepartPie <- renderPlotly({
     plot_ly(ohareAirlines, labels = ~ohareAirlines$Carrier, values = ~ohareAirlines$Departures, type = "pie") %>%
@@ -554,35 +519,6 @@ server <- function(input, output) {
       layout(xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
              yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
   })
-  
-  #Hourly arrival pie chart
-  output$midwayHourlyArrivalPie <- renderPlotly({
-    plot_ly(midwayArrHourlyData, labels = ~midwayArrHourlyData$Hour, values = ~midwayArrHourlyData$`Number Of Flight`, type = "pie") %>%
-      layout(xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-             yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
-  })
-  output$midwayHourlyDeparturePie <- renderPlotly({
-    plot_ly(midwayDepHourlyData, labels = ~midwayDepHourlyData$Hour, values = ~midwayDepHourlyData$`Number Of Flight`, type = "pie") %>%
-      layout(xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-             yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
-  })
-  output$ohareHourlyDeparturePie <- renderPlotly({
-    plot_ly(ohareDepHourlyData, labels = ~ohareDepHourlyData$Hour, values = ~ohareDepHourlyData$`Number Of Flight`, type = "pie") %>%
-      layout(xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-             yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
-  })
-  output$ohareHourlyArrivalPie <- renderPlotly({
-    plot_ly(ohareArrHourlyData, labels = ~ohareArrHourlyData$Hour, values = ~ohareArrHourlyData$`Number Of Flight`, type = "pie") %>%
-      layout(xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-             yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
-  })
-  
-  #Tables for hourly data
-  output$ohareHourlyArrTable <- DT::renderDataTable(ohareArrHourlyData, server = TRUE, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
-  output$ohareHourlyDepTable <- DT::renderDataTable(ohareDepHourlyData, server = TRUE, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
-  
-  output$midwayHourlyArrTable <- DT::renderDataTable(midwayArrHourlyData, server = TRUE, options = list(pageLength = 8, lengthChange = FALSE, seraching = FALSE))
-  output$midwayHourlyDepTable <- DT::renderDataTable(midwayDepHourlyData, server = TRUE, options = list(pageLength = 8, lengthChange = FALSE, seraching = FALSE))
   
   # Tables for each day of the week for ohare and midway
   output$ohareDayDataTable <- DT::renderDataTable(ohareDayData, server = TRUE, options = list(pageLength = 7, lengthChange = FALSE, searching = FALSE))
