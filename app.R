@@ -384,7 +384,7 @@ midJanDelayTemp <- subset(januaryFlightData, januaryFlightData$ORIGIN_AIRPORT_ID
 midJanDelay <- aggregate(cbind(midJanDelayTemp$CANCELLED)~midJanDelayTemp$DEP_HOUR, data=midJanDelayTemp, FUN=sum)
 oJanDelayTemp <- subset(januaryFlightData, januaryFlightData$ORIGIN_AIRPORT_ID == "13930")
 oJanDelay <- aggregate(cbind(oJanDelayTemp$CANCELLED)~oJanDelayTemp$DEP_HOUR, data=oJanDelayTemp, FUN=sum)
-#<- t(aggregate(januaryFlightData$CANCELLED ~ januaryFlightData$CANCELLATION_CODE, januaryFlightData, sum)$'januaryFlightData$CANCELLED')
+byMonthDelay <- rbind(byMonthDelay, t(aggregate(januaryFlightData$CANCELLED ~ januaryFlightData$CANCELLATION_CODE, januaryFlightData, sum)$'januaryFlightData$CANCELLED'))
 
 midFebDelayTemp <- subset(februaryFlightData, februaryFlightData$ORIGIN_AIRPORT_ID == "13232")
 midFebDelay <- aggregate(cbind(midFebDelayTemp$CANCELLED)~midFebDelayTemp$DEP_HOUR, data=midFebDelayTemp, FUN=sum)
