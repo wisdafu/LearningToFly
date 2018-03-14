@@ -302,6 +302,7 @@ midwayOriginSunday <- subset(midwayOrigin, weekdays(as.Date(midwayOrigin$FL_DATE
 
 
 # get hourly data for both airports
+#jan
 midwayJanArrHourlyData <- na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
 midwayJanDepHourlyData <- na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
 colnames(midwayJanArrHourlyData) <- c("Hour", "Number Of Flight")
@@ -311,6 +312,41 @@ ohareJanArrHourlyData <- na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
 ohareJanDepHourlyData <- na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
 colnames(ohareJanArrHourlyData) <- c("Hour", "Number Of Flight")
 colnames(ohareJanDepHourlyData) <- c("Hour", "Number Of Flight")
+
+#feb
+midwayFebArrHourlyData <- na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
+midwayFebDepHourlyData <- na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
+colnames(midwayFebArrHourlyData) <- c("Hour", "Number Of Flight")
+colnames(midwayFebDepHourlyData) <- c("Hour", "Number Of Flight")
+
+ohareFebArrHourlyData <- na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
+ohareFebDepHourlyData <- na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
+colnames(ohareFebArrHourlyData) <- c("Hour", "Number Of Flight")
+colnames(ohareFebDepHourlyData) <- c("Hour", "Number Of Flight")
+
+#march
+midwayMarchArrHourlyData <- na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
+midwayMarchDepHourlyData <- na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
+colnames(midwayMarchArrHourlyData) <- c("Hour", "Number Of Flight")
+colnames(midwayMarchDepHourlyData) <- c("Hour", "Number Of Flight")
+
+ohareMarchArrHourlyData <- na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
+ohareMarchDepHourlyData <- na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
+colnames(ohareMarchArrHourlyData) <- c("Hour", "Number Of Flight")
+colnames(ohareMarchDepHourlyData) <- c("Hour", "Number Of Flight")
+
+#april
+midwayAprilArrHourlyData <- na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
+midwayAprilDepHourlyData <- na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
+colnames(midwayAprilArrHourlyData) <- c("Hour", "Number Of Flight")
+colnames(midwayAprilDepHourlyData) <- c("Hour", "Number Of Flight")
+
+ohareAprilArrHourlyData <- na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
+ohareAprilDepHourlyData <- na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
+colnames(ohareAprilArrHourlyData) <- c("Hour", "Number Of Flight")
+colnames(ohareAprilDepHourlyData) <- c("Hour", "Number Of Flight")
+
+#may
 # Create single file for both ohare and midway to encapsulate days of week for ohare
 ohareDayData <- data.frame(matrix(ncol = 3, nrow = 0))
 x <- c("Day", "Departures", "Arrivals")
