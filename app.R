@@ -303,136 +303,184 @@ midwayOriginSunday <- subset(midwayOrigin, weekdays(as.Date(midwayOrigin$FL_DATE
 #-------------------------------------------------------------------------------------------------------------------------------------------
 # get hourly data for both airports
 #jan
-midwayJanArrHourlyData <- na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
-midwayJanDepHourlyData <- na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
-colnames(midwayJanArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(midwayJanDepHourlyData) <- c("Hour", "Number Of Flight")
+midwayJanArrHourlyData <- na.omit(as.data.frame(table(factor(midwayDest$ARR_HOUR, levels = 0:23))))
+midwayJanDepHourlyData <- na.omit(as.data.frame(table(factor(midwayOrigin$DEP_HOUR, levels = 0:23))))
 
-ohareJanArrHourlyData <- na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
-ohareJanDepHourlyData <- na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
-colnames(ohareJanArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(ohareJanDepHourlyData) <- c("Hour", "Number Of Flight")
+ohareJanArrHourlyData <- na.omit(as.data.frame(table(factor(ohareDest$ARR_HOUR, levels = 0:23))))
+ohareJanDepHourlyData <- na.omit(as.data.frame(table(factor(ohareOrigin$DEP_HOUR, levels = 0:23))))
+
+midwayJanHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+midwayJanHourlyData$Arr <- midwayJanArrHourlyData$Freq
+midwayJanHourlyData$Dep <- midwayJanDepHourlyData$Freq
+
+ohareJanHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+ohareJanHourlyData$Arr <- ohareJanArrHourlyData$Freq
+ohareJanHourlyData$Dep <- ohareJanDepHourlyData$Freq
 
 #feb
-midwayFebArrHourlyData <- na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
-midwayFebDepHourlyData <- na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
-colnames(midwayFebArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(midwayFebDepHourlyData) <- c("Hour", "Number Of Flight")
+midwayFebArrHourlyData <- na.omit(as.data.frame(table(factor(midwayDest$ARR_HOUR, levels = 0:23))))
+midwayFebDepHourlyData <- na.omit(as.data.frame(table(factor(midwayOrigin$DEP_HOUR, levels = 0:23))))
 
-ohareFebArrHourlyData <- na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
-ohareFebDepHourlyData <- na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
-colnames(ohareFebArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(ohareFebDepHourlyData) <- c("Hour", "Number Of Flight")
+ohareFebArrHourlyData <- na.omit(as.data.frame(table(factor(ohareDest$ARR_HOUR, levels = 0:23))))
+ohareFebDepHourlyData <- na.omit(as.data.frame(table(factor(ohareOrigin$DEP_HOUR, levels = 0:23))))
+
+midwayFebHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+midwayFebHourlyData$Arr <- midwayFebArrHourlyData$Freq
+midwayFebHourlyData$Dep <- midwayFebDepHourlyData$Freq
+
+ohareFebHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+ohareFebHourlyData$Arr <- ohareFebArrHourlyData$Freq
+ohareFebHourlyData$Dep <- ohareFebDepHourlyData$Freq
 
 #march
-midwayMarchArrHourlyData <- na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
-midwayMarchDepHourlyData <- na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
-colnames(midwayMarchArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(midwayMarchDepHourlyData) <- c("Hour", "Number Of Flight")
+midwayMarchArrHourlyData <- na.omit(as.data.frame(table(factor(midwayDest$ARR_HOUR, levels = 0:23))))
+midwayMarchDepHourlyData <- na.omit(as.data.frame(table(factor(midwayOrigin$DEP_HOUR, levels = 0:23))))
 
-ohareMarchArrHourlyData <- na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
-ohareMarchDepHourlyData <- na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
-colnames(ohareMarchArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(ohareMarchDepHourlyData) <- c("Hour", "Number Of Flight")
+ohareMarchArrHourlyData <- na.omit(as.data.frame(table(factor(ohareDest$ARR_HOUR, levels = 0:23))))
+ohareMarchDepHourlyData <- na.omit(as.data.frame(table(factor(ohareOrigin$DEP_HOUR, levels = 0:23))))
+
+midwayMarchHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+midwayMarchHourlyData$Arr <- midwayMarchArrHourlyData$Freq
+midwayMarchHourlyData$Dep <- midwayMarchDepHourlyData$Freq
+
+ohareMarchHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+ohareMarchHourlyData$Arr <- ohareMarchArrHourlyData$Freq
+ohareMarchHourlyData$Dep <- ohareMarchDepHourlyData$Freq
 
 #april
-midwayAprilArrHourlyData <- na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
-midwayAprilDepHourlyData <- na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
-colnames(midwayAprilArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(midwayAprilDepHourlyData) <- c("Hour", "Number Of Flight")
+midwayAprilArrHourlyData <- na.omit(as.data.frame(table(factor(midwayDest$ARR_HOUR, levels = 0:23))))
+midwayAprilDepHourlyData <- na.omit(as.data.frame(table(factor(midwayOrigin$DEP_HOUR, levels = 0:23))))
 
-ohareAprilArrHourlyData <- na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
-ohareAprilDepHourlyData <- na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
-colnames(ohareAprilArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(ohareAprilDepHourlyData) <- c("Hour", "Number Of Flight")
+ohareAprilArrHourlyData <- na.omit(as.data.frame(table(factor(ohareDest$ARR_HOUR, levels = 0:23))))
+ohareAprilDepHourlyData <- na.omit(as.data.frame(table(factor(ohareOrigin$DEP_HOUR, levels = 0:23))))
+
+midwayAprilHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+midwayAprilHourlyData$Arr <- midwayAprilArrHourlyData$Freq
+midwayAprilHourlyData$Dep <- midwayAprilDepHourlyData$Freq
+
+ohareAprilHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+ohareAprilHourlyData$Arr <- ohareAprilArrHourlyData$Freq
+ohareAprilHourlyData$Dep <- ohareAprilDepHourlyData$Freq
 
 #may
-midwayMayArrHourlyData <- na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
-midwayMayDepHourlyData <- na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
-colnames(midwayMayArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(midwayMayDepHourlyData) <- c("Hour", "Number Of Flight")
+midwayMayArrHourlyData <- na.omit(as.data.frame(table(factor(midwayDest$ARR_HOUR, levels = 0:23))))
+midwayMayDepHourlyData <- na.omit(as.data.frame(table(factor(midwayOrigin$DEP_HOUR, levels = 0:23))))
 
-ohareMayArrHourlyData <- na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
-ohareMayDepHourlyData <- na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
-colnames(ohareMayArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(ohareMaylDepHourlyData) <- c("Hour", "Number Of Flight")
+ohareMayArrHourlyData <- na.omit(as.data.frame(table(factor(ohareDest$ARR_HOUR, levels = 0:23))))
+ohareMayDepHourlyData <- na.omit(as.data.frame(table(factor(ohareOrigin$DEP_HOUR, levels = 0:23))))
+
+midwayMayHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+midwayMayHourlyData$Arr <- midwayMayArrHourlyData$Freq
+midwayMayHourlyData$Dep <- midwayMayDepHourlyData$Freq
+
+ohareMayHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+ohareMayHourlyData$Arr <- ohareMayArrHourlyData$Freq
+ohareMayHourlyData$Dep <- ohareMayDepHourlyData$Freq
 
 #june
-midwayJuneArrHourlyData <- na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
-midwayJuneDepHourlyData <- na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
-colnames(midwayJuneArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(midwayJuneDepHourlyData) <- c("Hour", "Number Of Flight")
+midwayJuneArrHourlyData <- na.omit(as.data.frame(table(factor(midwayDest$ARR_HOUR, levels = 0:23))))
+midwayJuneDepHourlyData <- na.omit(as.data.frame(table(factor(midwayOrigin$DEP_HOUR, levels = 0:23))))
 
-ohareJuneArrHourlyData <- na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
-ohareJuneDepHourlyData <- na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
-colnames(ohareJuneArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(ohareJunelDepHourlyData) <- c("Hour", "Number Of Flight")
+ohareJuneArrHourlyData <- na.omit(as.data.frame(table(factor(ohareDest$ARR_HOUR, levels = 0:23))))
+ohareJuneDepHourlyData <- na.omit(as.data.frame(table(factor(ohareOrigin$DEP_HOUR, levels = 0:23))))
+
+midwayJuneHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+midwayJuneHourlyData$Arr <- midwayJuneArrHourlyData$Freq
+midwayJuneHourlyData$Dep <- midwayJuneDepHourlyData$Freq
+
+ohareJuneHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+ohareJuneHourlyData$Arr <- ohareJuneArrHourlyData$Freq
+ohareJuneHourlyData$Dep <- ohareJuneDepHourlyData$Freq
 
 #july
-midwayJulyArrHourlyData <- na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
-midwayJulyDepHourlyData <- na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
-colnames(midwayJulyArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(midwayJulyDepHourlyData) <- c("Hour", "Number Of Flight")
+midwayJulyArrHourlyData <- na.omit(as.data.frame(table(factor(midwayDest$ARR_HOUR, levels = 0:23))))
+midwayJulyDepHourlyData <- na.omit(as.data.frame(table(factor(midwayOrigin$DEP_HOUR, levels = 0:23))))
 
-ohareJulyArrHourlyData <- na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
-ohareJulyDepHourlyData <- na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
-colnames(ohareJulyArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(ohareJulylDepHourlyData) <- c("Hour", "Number Of Flight")
+ohareJulyArrHourlyData <- na.omit(as.data.frame(table(factor(ohareDest$ARR_HOUR, levels = 0:23))))
+ohareJulyDepHourlyData <- na.omit(as.data.frame(table(factor(ohareOrigin$DEP_HOUR, levels = 0:23))))
+
+midwayJulyHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+midwayJulyHourlyData$Arr <- midwayJulyArrHourlyData$Freq
+midwayJulyHourlyData$Dep <- midwayJulyDepHourlyData$Freq
+
+ohareJulyHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+ohareJulyHourlyData$Arr <- ohareJulyArrHourlyData$Freq
+ohareJulyHourlyData$Dep <- ohareJulyDepHourlyData$Freq
 
 #August
-midwayAugArrHourlyData <- na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
-midwayAugDepHourlyData <- na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
-colnames(midwayAugArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(midwayAugDepHourlyData) <- c("Hour", "Number Of Flight")
+midwayAugArrHourlyData <- na.omit(as.data.frame(table(factor(midwayDest$ARR_HOUR, levels = 0:23))))
+midwayAugDepHourlyData <- na.omit(as.data.frame(table(factor(midwayOrigin$DEP_HOUR, levels = 0:23))))
 
-ohareAugArrHourlyData <- na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
-ohareAugDepHourlyData <- na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
-colnames(ohareAugArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(ohareAuglDepHourlyData) <- c("Hour", "Number Of Flight")
+ohareAugArrHourlyData <- na.omit(as.data.frame(table(factor(ohareDest$ARR_HOUR, levels = 0:23))))
+ohareAugDepHourlyData <- na.omit(as.data.frame(table(factor(ohareOrigin$DEP_HOUR, levels = 0:23))))
 
-#sep
-midwaySepArrHourlyData <- na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
-midwaySepDepHourlyData <- na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
-colnames(midwaySepArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(midwaySepDepHourlyData) <- c("Hour", "Number Of Flight")
+midwayAugHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+midwayAugHourlyData$Arr <- midwayAugArrHourlyData$Freq
+midwayAugHourlyData$Dep <- midwayAugDepHourlyData$Freq
 
-ohareSepArrHourlyData <- na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
-ohareSepDepHourlyData <- na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
-colnames(ohareSepArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(ohareSepDepHourlyData) <- c("Hour", "Number Of Flight")
+ohareAugHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+ohareAugHourlyData$Arr <- ohareAugArrHourlyData$Freq
+ohareAugHourlyData$Dep <- ohareAugDepHourlyData$Freq
+
+#september
+midwaySepArrHourlyData <- na.omit(as.data.frame(table(factor(midwayDest$ARR_HOUR, levels = 0:23))))
+midwaySepDepHourlyData <- na.omit(as.data.frame(table(factor(midwayOrigin$DEP_HOUR, levels = 0:23))))
+
+ohareSepArrHourlyData <- na.omit(as.data.frame(table(factor(ohareDest$ARR_HOUR, levels = 0:23))))
+ohareSepDepHourlyData <- na.omit(as.data.frame(table(factor(ohareOrigin$DEP_HOUR, levels = 0:23))))
+
+midwaySepHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+midwaySepHourlyData$Arr <- midwaySepArrHourlyData$Freq
+midwaySepHourlyData$Dep <- midwaySepDepHourlyData$Freq
+
+ohareSepHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+ohareSepHourlyData$Arr <- ohareSepArrHourlyData$Freq
+ohareSepHourlyData$Dep <- ohareSepDepHourlyData$Freq
 
 #october
-midwayOctArrHourlyData <- na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
-midwayOctDepHourlyData <- na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
-colnames(midwayOctArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(midwayOctDepHourlyData) <- c("Hour", "Number Of Flight")
+midwayOctArrHourlyData <- na.omit(as.data.frame(table(factor(midwayDest$ARR_HOUR, levels = 0:23))))
+midwayOctDepHourlyData <- na.omit(as.data.frame(table(factor(midwayOrigin$DEP_HOUR, levels = 0:23))))
 
-ohareOctArrHourlyData <- na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
-ohareOctDepHourlyData <- na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
-colnames(ohareOctArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(ohareOctlDepHourlyData) <- c("Hour", "Number Of Flight")
+ohareOctArrHourlyData <- na.omit(as.data.frame(table(factor(ohareDest$ARR_HOUR, levels = 0:23))))
+ohareOctDepHourlyData <- na.omit(as.data.frame(table(factor(ohareOrigin$DEP_HOUR, levels = 0:23))))
+
+midwayOctHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+midwayOctHourlyData$Arr <- midwayOctArrHourlyData$Freq
+midwayOctHourlyData$Dep <- midwayOctDepHourlyData$Freq
+
+ohareOctHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+ohareOctHourlyData$Arr <- ohareOctArrHourlyData$Freq
+ohareOctHourlyData$Dep <- ohareOctDepHourlyData$Freq
 
 #november
-midwayNovArrHourlyData <- na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
-midwayNovDepHourlyData <- na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
-colnames(midwayNovArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(midwayNovDepHourlyData) <- c("Hour", "Number Of Flight")
+midwayNovArrHourlyData <- na.omit(as.data.frame(table(factor(midwayDest$ARR_HOUR, levels = 0:23))))
+midwayNovDepHourlyData <- na.omit(as.data.frame(table(factor(midwayOrigin$DEP_HOUR, levels = 0:23))))
 
-ohareNovArrHourlyData <- na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
-ohareNovDepHourlyData <- na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
-colnames(ohareNovArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(ohareNovlDepHourlyData) <- c("Hour", "Number Of Flight")
+ohareNovArrHourlyData <- na.omit(as.data.frame(table(factor(ohareDest$ARR_HOUR, levels = 0:23))))
+ohareNovDepHourlyData <- na.omit(as.data.frame(table(factor(ohareOrigin$DEP_HOUR, levels = 0:23))))
+
+midwayNovHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+midwayNovHourlyData$Arr <- midwayNovArrHourlyData$Freq
+midwayNovHourlyData$Dep <- midwayNovDepHourlyData$Freq
+
+ohareNovHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+ohareNovHourlyData$Arr <- ohareNovArrHourlyData$Freq
+ohareNovHourlyData$Dep <- ohareNovDepHourlyData$Freq
 
 #december
-midwayDecArrHourlyData <- na.omit(as.data.frame(table(midwayDest$ARR_HOUR)))
-midwayDecDepHourlyData <- na.omit(as.data.frame(table(midwayOrigin$DEP_HOUR)))
-colnames(midwayDecArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(midwayDecDepHourlyData) <- c("Hour", "Number Of Flight")
+midwayDecArrHourlyData <- na.omit(as.data.frame(table(factor(midwayDest$ARR_HOUR, levels = 0:23))))
+midwayDecDepHourlyData <- na.omit(as.data.frame(table(factor(midwayOrigin$DEP_HOUR, levels = 0:23))))
 
-ohareDecArrHourlyData <- na.omit(as.data.frame(table(ohareDest$ARR_HOUR)))
-ohareDecDepHourlyData <- na.omit(as.data.frame(table(ohareOrigin$DEP_HOUR)))
-colnames(ohareDecArrHourlyData) <- c("Hour", "Number Of Flight")
-colnames(ohareDeclDepHourlyData) <- c("Hour", "Number Of Flight")
+ohareDecArrHourlyData <- na.omit(as.data.frame(table(factor(ohareDest$ARR_HOUR, levels = 0:23))))
+ohareDecDepHourlyData <- na.omit(as.data.frame(table(factor(ohareOrigin$DEP_HOUR, levels = 0:23))))
+
+midwayDecHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+midwayDecHourlyData$Arr <- midwayDecArrHourlyData$Freq
+midwayDecHourlyData$Dep <- midwayDecDepHourlyData$Freq
+
+ohareDecHourlyData <- data.frame("Hour" = c(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23))
+ohareDecHourlyData$Arr <- ohareDecArrHourlyData$Freq
+ohareDecHourlyData$Dep <- ohareDecDepHourlyData$Freq
 
 #-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -597,16 +645,11 @@ ui <- dashboardPage(
                 )
               ),
               fluidRow(
-                box(title = "O'Hare Airline Hourly Arrival Data as Pie Chart", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("ohareJanHourlyArrivalPie")
-                ),
-                box(title = "O'Hare Airline Hourly Departure Data as Pie Chart", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("ohareJanHourlyDeparturePie")
-                )
+                box(title = "O'Hare Airline Hourly Arrival & Departure as Line Chart", solidHeader = TRUE, status = "primary", width = 12, plotOutput("ohareJanHourlyLine"))
+              
               ),
               fluidRow(
-                box(title = "O'Hare Airline Hourly Departure Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("ohareJanHourlyDepTable")
-                ),
-                box(title = "O'Hare Airline Hourly Arrival Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("ohareJanHourlyArrTable")
-                )
+                box(title = "O'Hare Airline Hourly Arrival & Departure Table", solidHeader = TRUE, status = "primary", width = 12, dataTableOutput("ohareJanHourlyTable"))
               ),
               fluidRow(
                 box(title = "O'Hare Day Airline Data as Table", solidHeader = TRUE, status = "primary", width = 12, dataTableOutput("ohareDayDataTable")
@@ -629,16 +672,10 @@ ui <- dashboardPage(
                 )
               ),
               fluidRow(
-                box(title = "Midway Airline Hourly Departure Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("midwayJanHourlyDepTable")
-                ),
-                box(title = "Midway Airline Hourly Arrival Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("midwayJanHourlyArrTable")
-                )
+                box(title = "Midway Airline Hourly Arrival & Departure Table", solidHeader = TRUE, status = "primary", width = 12, dataTableOutput("midwayJanHourlyTable"))
               ),
               fluidRow(
-                box(title = "Midway Airline Hourly Arrival Data as Pie Chart", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("midwayJanHourlyArrivalPie")
-                ),
-                box(title = "Midway Airline Hourly Departure Data as Pie Chart", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("midwayJanHourlyDeparturePie")
-                )
+                box(title = "Midway Airline Hourly Arrival & Departure as Line Chart", solidHeader = TRUE, status = "primary", width = 12, plotOutput("midwayJanHourlyLine"))
               ),
               fluidRow(
                 box(title = "Midway Day Airline Data as Table", solidHeader = TRUE, status = "primary", width = 12, dataTableOutput("midwayDayDataTable")
@@ -709,33 +746,20 @@ server <- function(input, output) {
   })
   
   #Hourly arrival pie chart
-  output$midwayJanHourlyArrivalPie <- renderPlotly({
-    plot_ly(midwayJanArrHourlyData, labels = ~midwayJanArrHourlyData$Hour, values = ~midwayJanArrHourlyData$`Number Of Flight`, type = "pie") %>%
-      layout(xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-             yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+  output$midwayJanHourlyLine <- renderPlot({
+    ggplot(midwayJanHourlyData, aes(x=midwayJanHourlyData$Hour)) + geom_line(aes(y=midwayJanHourlyData$Arr, color = "Arrivals")) +
+    geom_line(aes(y=midwayJanHourlyData$Dep, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
+    scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
   })
-  output$midwayJanHourlyDeparturePie <- renderPlotly({
-    plot_ly(midwayJanDepHourlyData, labels = ~midwayJanDepHourlyData$Hour, values = ~midwayJanDepHourlyData$`Number Of Flight`, type = "pie") %>%
-      layout(xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-             yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
-  })
-  output$ohareJanHourlyDeparturePie <- renderPlotly({
-    plot_ly(ohareJanDepHourlyData, labels = ~ohareJanDepHourlyData$Hour, values = ~ohareJanDepHourlyData$`Number Of Flight`, type = "pie") %>%
-      layout(xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-             yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
-  })
-  output$ohareJanHourlyArrivalPie <- renderPlotly({
-    plot_ly(ohareJanArrHourlyData, labels = ~ohareJanArrHourlyData$Hour, values = ~ohareJanArrHourlyData$`Number Of Flight`, type = "pie") %>%
-      layout(xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
-             yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+  output$ohareJanHourlyLine <- renderPlot({
+    ggplot(ohareJanHourlyData, aes(x=ohareJanHourlyData$Hour)) + geom_line(aes(y=ohareJanHourlyData$Arr, color = "Arrivals")) +
+    geom_line(aes(y=ohareJanHourlyData$Dep, color = "Departures")) + labs(x="Hour", y="Number of Flights") +
+    scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
   })
   
   #Tables for hourly data
-  output$ohareJanHourlyArrTable <- DT::renderDataTable(ohareJanArrHourlyData, server = TRUE, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
-  output$ohareJanHourlyDepTable <- DT::renderDataTable(ohareJanDepHourlyData, server = TRUE, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
-  
-  output$midwayJanHourlyArrTable <- DT::renderDataTable(midwayJanArrHourlyData, server = TRUE, options = list(pageLength = 8, lengthChange = FALSE, seraching = FALSE))
-  output$midwayJanHourlyDepTable <- DT::renderDataTable(midwayJanDepHourlyData, server = TRUE, options = list(pageLength = 8, lengthChange = FALSE, seraching = FALSE))
+  output$ohareJanHourlyTable <- DT::renderDataTable(ohareJanHourlyData, server = TRUE, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
+  output$midwayJanHourlyTable <- DT::renderDataTable(midwayJanHourlyData, server = TRUE, options = list(pageLength = 8, lengthChange = FALSE, seraching = FALSE))
   
   # Tables for each day of the week for ohare and midway
   output$ohareDayDataTable <- DT::renderDataTable(ohareDayData, server = TRUE, options = list(pageLength = 7, lengthChange = FALSE, searching = FALSE))
