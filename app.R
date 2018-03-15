@@ -745,7 +745,7 @@ server <- function(input, output) {
              yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
   })
   
-  #Hourly arrival pie chart
+  #Hourly arrival Line charts
   output$midwayJanHourlyLine <- renderPlot({
     ggplot(midwayJanHourlyData, aes(x=midwayJanHourlyData$Hour)) + geom_line(aes(y=midwayJanHourlyData$Arr, color = "Arrivals")) +
     geom_line(aes(y=midwayJanHourlyData$Dep, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
@@ -756,10 +756,142 @@ server <- function(input, output) {
     geom_line(aes(y=ohareJanHourlyData$Dep, color = "Departures")) + labs(x="Hour", y="Number of Flights") +
     scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
   })
+  output$midwayFebHourlyLine <- renderPlot({
+    ggplot(midwayFebHourlyData, aes(x=midwayFebHourlyData$Hour)) + geom_line(aes(y=midwayFebHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=midwayFebHourlyData$Dep, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  output$ohareFebHourlyLine <- renderPlot({
+    ggplot(ohareFebHourlyData, aes(x=ohareFebHourlyData$Hour)) + geom_line(aes(y=ohareFebHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=ohareFebHourlyData$Dep, color = "Departures")) + labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  output$midwayMarchHourlyLine <- renderPlot({
+    ggplot(midwayMarchHourlyData, aes(x=midwayMarchHourlyData$Hour)) + geom_line(aes(y=midwayMarchHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=midwayMarchHourlyData$Dep, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  output$ohareMarchHourlyLine <- renderPlot({
+    ggplot(ohareMarchHourlyData, aes(x=ohareMarchHourlyData$Hour)) + geom_line(aes(y=ohareMarchHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=ohareMarchHourlyData$Dep, color = "Departures")) + labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  output$midwayAprilHourlyLine <- renderPlot({
+    ggplot(midwayAprilHourlyData, aes(x=midwayAprilHourlyData$Hour)) + geom_line(aes(y=midwayAprilHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=midwayAprilHourlyData$Dep, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  output$ohareAprilHourlyLine <- renderPlot({
+    ggplot(ohareAprilHourlyData, aes(x=ohareAprilHourlyData$Hour)) + geom_line(aes(y=ohareAprilHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=ohareAprilHourlyData$Dep, color = "Departures")) + labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  output$midwayMayHourlyLine <- renderPlot({
+    ggplot(midwayMayHourlyData, aes(x=midwayMayHourlyData$Hour)) + geom_line(aes(y=midwayMayHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=midwayMayHourlyData$Dep, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  output$ohareMayHourlyLine <- renderPlot({
+    ggplot(ohareMayHourlyData, aes(x=ohareMayHourlyData$Hour)) + geom_line(aes(y=ohareMayHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=ohareMayHourlyData$Dep, color = "Departures")) + labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  output$midwayJuneHourlyLine <- renderPlot({
+    ggplot(midwayJuneHourlyData, aes(x=midwayJuneHourlyData$Hour)) + geom_line(aes(y=midwayJuneHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=midwayJuneHourlyData$Dep, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  output$ohareJuneHourlyLine <- renderPlot({
+    ggplot(ohareJuneHourlyData, aes(x=ohareJuneHourlyData$Hour)) + geom_line(aes(y=ohareJuneHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=ohareJuneHourlyData$Dep, color = "Departures")) + labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  output$midwayJulyHourlyLine <- renderPlot({
+    ggplot(midwayJulyHourlyData, aes(x=midwayJulyHourlyData$Hour)) + geom_line(aes(y=midwayJulyHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=midwayJulyHourlyData$Dep, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  output$ohareJulyHourlyLine <- renderPlot({
+    ggplot(ohareJulyHourlyData, aes(x=ohareJulyHourlyData$Hour)) + geom_line(aes(y=ohareJulyHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=ohareJulyHourlyData$Dep, color = "Departures")) + labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  output$midwayAugHourlyLine <- renderPlot({
+    ggplot(midwayAugHourlyData, aes(x=midwayAugHourlyData$Hour)) + geom_line(aes(y=midwayAugHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=midwayAugHourlyData$Dep, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  output$ohareAugHourlyLine <- renderPlot({
+    ggplot(ohareAugHourlyData, aes(x=ohareAugHourlyData$Hour)) + geom_line(aes(y=ohareAugHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=ohareAugHourlyData$Dep, color = "Departures")) + labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  output$midwaySepHourlyLine <- renderPlot({
+    ggplot(midwaySepHourlyData, aes(x=midwaySepHourlyData$Hour)) + geom_line(aes(y=midwaySepHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=midwaySepHourlyData$Dep, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  output$ohareSepHourlyLine <- renderPlot({
+    ggplot(ohareSepHourlyData, aes(x=ohareSepHourlyData$Hour)) + geom_line(aes(y=ohareSepHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=ohareSepHourlyData$Dep, color = "Departures")) + labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })  
+  output$midwayOctHourlyLine <- renderPlot({
+    ggplot(midwayOctHourlyData, aes(x=midwayOctHourlyData$Hour)) + geom_line(aes(y=midwayOctHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=midwayOctHourlyData$Dep, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  output$ohareOctHourlyLine <- renderPlot({
+    ggplot(ohareOctHourlyData, aes(x=ohareOctHourlyData$Hour)) + geom_line(aes(y=ohareOctHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=ohareOctHourlyData$Dep, color = "Departures")) + labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })  
+  output$midwayNovHourlyLine <- renderPlot({
+    ggplot(midwayNovHourlyData, aes(x=midwayNovHourlyData$Hour)) + geom_line(aes(y=midwayNovHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=midwayNovHourlyData$Dep, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  output$ohareNovHourlyLine <- renderPlot({
+    ggplot(ohareNovHourlyData, aes(x=ohareNovHourlyData$Hour)) + geom_line(aes(y=ohareNovHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=ohareNovHourlyData$Dep, color = "Departures")) + labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })  
+  output$midwayDecHourlyLine <- renderPlot({
+    ggplot(midwayDecHourlyData, aes(x=midwayDecHourlyData$Hour)) + geom_line(aes(y=midwayDecHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=midwayDecHourlyData$Dep, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  output$ohareDecHourlyLine <- renderPlot({
+    ggplot(ohareDecHourlyData, aes(x=ohareDecHourlyData$Hour)) + geom_line(aes(y=ohareDecHourlyData$Arr, color = "Arrivals")) +
+      geom_line(aes(y=ohareDecHourlyData$Dep, color = "Departures")) + labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })   
   
   #Tables for hourly data
   output$ohareJanHourlyTable <- DT::renderDataTable(ohareJanHourlyData, server = TRUE, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
   output$midwayJanHourlyTable <- DT::renderDataTable(midwayJanHourlyData, server = TRUE, options = list(pageLength = 8, lengthChange = FALSE, seraching = FALSE))
+  output$ohareFebHourlyTable <- DT::renderDataTable(ohareFebHourlyData, server = TRUE, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
+  output$midwayFebHourlyTable <- DT::renderDataTable(midwayFebHourlyData, server = TRUE, options = list(pageLength = 8, lengthChange = FALSE, seraching = FALSE))
+  output$ohareMarchHourlyTable <- DT::renderDataTable(ohareMarchHourlyData, server = TRUE, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
+  output$midwayMarchHourlyTable <- DT::renderDataTable(midwayMarchHourlyData, server = TRUE, options = list(pageLength = 8, lengthChange = FALSE, seraching = FALSE))
+  output$ohareAprilHourlyTable <- DT::renderDataTable(ohareAprilHourlyData, server = TRUE, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
+  output$midwayAprilHourlyTable <- DT::renderDataTable(midwayAprilHourlyData, server = TRUE, options = list(pageLength = 8, lengthChange = FALSE, seraching = FALSE))
+  output$ohareMayHourlyTable <- DT::renderDataTable(ohareMayHourlyData, server = TRUE, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
+  output$midwayMayHourlyTable <- DT::renderDataTable(midwayMayHourlyData, server = TRUE, options = list(pageLength = 8, lengthChange = FALSE, seraching = FALSE))
+  output$ohareJuneHourlyTable <- DT::renderDataTable(ohareJuneHourlyData, server = TRUE, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
+  output$midwayJuneHourlyTable <- DT::renderDataTable(midwayJuneHourlyData, server = TRUE, options = list(pageLength = 8, lengthChange = FALSE, seraching = FALSE))
+  output$ohareJulyHourlyTable <- DT::renderDataTable(ohareJulyHourlyData, server = TRUE, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
+  output$midwayJulyHourlyTable <- DT::renderDataTable(midwayJulyHourlyData, server = TRUE, options = list(pageLength = 8, lengthChange = FALSE, seraching = FALSE))
+  output$ohareAugHourlyTable <- DT::renderDataTable(ohareAugHourlyData, server = TRUE, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
+  output$midwayAugHourlyTable <- DT::renderDataTable(midwayAugHourlyData, server = TRUE, options = list(pageLength = 8, lengthChange = FALSE, seraching = FALSE))
+  output$ohareSepHourlyTable <- DT::renderDataTable(ohareSepHourlyData, server = TRUE, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
+  output$midwaySepHourlyTable <- DT::renderDataTable(midwaySepHourlyData, server = TRUE, options = list(pageLength = 8, lengthChange = FALSE, seraching = FALSE))
+  output$ohareOctHourlyTable <- DT::renderDataTable(ohareOctHourlyData, server = TRUE, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
+  output$midwayOctHourlyTable <- DT::renderDataTable(midwayOctHourlyData, server = TRUE, options = list(pageLength = 8, lengthChange = FALSE, seraching = FALSE))
+  output$ohareNovHourlyTable <- DT::renderDataTable(ohareNovHourlyData, server = TRUE, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
+  output$midwayNovHourlyTable <- DT::renderDataTable(midwayNovHourlyData, server = TRUE, options = list(pageLength = 8, lengthChange = FALSE, seraching = FALSE))
+  output$ohareDecHourlyTable <- DT::renderDataTable(ohareDecHourlyData, server = TRUE, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
+  output$midwayDecHourlyTable <- DT::renderDataTable(midwayDecHourlyData, server = TRUE, options = list(pageLength = 8, lengthChange = FALSE, seraching = FALSE))
   
   # Tables for each day of the week for ohare and midway
   output$ohareDayDataTable <- DT::renderDataTable(ohareDayData, server = TRUE, options = list(pageLength = 7, lengthChange = FALSE, searching = FALSE))
