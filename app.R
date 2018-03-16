@@ -16,6 +16,7 @@ library(DT)
 library(plotly)
 library(lubridate)
 library(dplyr)
+library(plyr)
 
 # Import all months and then create a single master sheet of all months of flight data
 january <- read.table(file = "january.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
@@ -94,8 +95,7 @@ ui <- dashboardPage(
   ), #end dashboardSidebar
 
   dashboardBody(
-    #textOutput("month")
-    plotOutput("tab1")
+    DT::dataTableOutput("tabl1")
   ) #end dashboardBody
 
 ) #end dashboardPage
@@ -107,9 +107,28 @@ server <- function(input, output) {
     match(input$months, month.abb)
   })
   
-  output$tabl1 <- renderPlot({
-    subset(master, master$DEST_AIRPORT_ID == "13232", month(master$FL_DATE) == monthNum())
+  # Displays all data filtered by month
+  output$tabl1 <- DT::renderDataTable({
+    
+    DT::datatable(master[month(master$FL_DATE) == monthNum(),])
+    
   })
+  
+  
+  output$carrierArrDep <- DT::renderDataTable({
+    
+    airlines <- unique(master$CARRIER)
+    
+    hi <- count(master, "DEP")
+    
+
+    DT::datatable(master[month(master$FL_DATE) == monthNum(),])
+    
+  })
+  
+
+  
+  
 
 
 } #end server
