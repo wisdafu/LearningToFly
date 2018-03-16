@@ -79,6 +79,11 @@ master$ARR_TIME <- sprintf("%04d", master$ARR_TIME)
 master$ARR_TIME <- as.POSIXct(master$ARR_TIME,tz="","%H%M")
 master$ARR_TIME <- format(master$ARR_TIME, "%H:%M")
 
+#
+# NOTE: Airport IDs
+#   - Midway = 13232
+#   - O'Hare = 13930
+#
 
 # Shiny Dashboard
 
@@ -95,7 +100,8 @@ ui <- dashboardPage(
   ), #end dashboardSidebar
 
   dashboardBody(
-    DT::dataTableOutput("tabl1")
+    DT::dataTableOutput("tabl1"),
+    DT::dataTableOutput("carrierArrDep")
   ) #end dashboardBody
 
 ) #end dashboardPage
@@ -116,13 +122,13 @@ server <- function(input, output) {
   
   
   output$carrierArrDep <- DT::renderDataTable({
-    
-    airlines <- unique(master$CARRIER)
-    
-    hi <- count(master, "DEP")
-    
+    #Arrivals
+    tempArr <- group_by(master, CARRIER)
+    tempArr <- filter(tempArr, ORIGIN_AIRPORT_ID == 13930)
+    tempArr <- filter(tempArr, month(tempArr$FL_DATE) == monthNum())  #check month
+    tempArr <- count(tempArr, 'CARRIER')
 
-    DT::datatable(master[month(master$FL_DATE) == monthNum(),])
+    DT::datatable(tempARR)
     
   })
   
