@@ -134,7 +134,6 @@ server <- function(input, output) {
     tempDep <- filter(tempDep, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
     tempDep <- filter(tempDep, DEST_AIRPORT_ID == 13930)
     tempDep <- count(tempDep, 'CARRIER')
-    tempDep[2] <- NULL
     names(tempArr)[2] <- 'Arrivals'
     tempArr$Departures <- tempDep$n
 
