@@ -124,11 +124,11 @@ server <- function(input, output) {
   output$carrierArrDep <- DT::renderDataTable({
     #Arrivals
     tempArr <- group_by(master, CARRIER)
+    tempArr <- filter(tempArr, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
     tempArr <- filter(tempArr, ORIGIN_AIRPORT_ID == 13930)
-    tempArr <- filter(tempArr, month(tempArr$FL_DATE) == monthNum())  #check month
     tempArr <- count(tempArr, 'CARRIER')
 
-    DT::datatable(tempARR)
+    DT::datatable(tempArr)
     
   })
   
