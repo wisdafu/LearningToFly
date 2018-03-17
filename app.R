@@ -141,7 +141,7 @@ server <- function(input, output) {
     tempDep <- filter(tempDep, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
     tempDep <- filter(tempDep, DEST_AIRPORT_ID == 13930)
     tempDep <- count(tempDep, 'CARRIER')
-    tempArr[2] <- NULL
+    tempDep[2] <- NULL
     
     DT::datatable(tempDep)
   })
