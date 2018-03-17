@@ -102,7 +102,7 @@ ui <- dashboardPage(
 
   dashboardBody(
     DT::dataTableOutput("tabl1"),
-    DT::dataTableOutput("carrierArr"),
+    DT::dataTableOutput("carrierArrDepOhare"),
     DT::dataTableOutput("carrierDep")
   ) #end dashboardBody
 
@@ -123,34 +123,26 @@ server <- function(input, output) {
   })
   
   
-  output$carrierArr <- DT::renderDataTable({
-    #Arrivals
+  output$carrierArrDepOhare <- DT::renderDataTable({
+    #Arrivals and Departures OHare
     tempArr <- group_by(master, CARRIER)
     tempArr <- filter(tempArr, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
     tempArr <- filter(tempArr, ORIGIN_AIRPORT_ID == 13930)
     tempArr <- count(tempArr, "CARRIER")
     tempArr[2] <- NULL
-
-    DT::datatable(tempArr)
-    
-  })
-  
-  output$carrierDep <- DT::renderDataTable({
-    #Departures
     tempDep <- group_by(master, CARRIER)
     tempDep <- filter(tempDep, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
     tempDep <- filter(tempDep, DEST_AIRPORT_ID == 13930)
     tempDep <- count(tempDep, 'CARRIER')
     tempDep[2] <- NULL
+    names(tempArr)[2] <- 'Arrivals'
+    tempArr$Departures <- tempDep$n
+
+    DT::datatable(tempArr)
     
-    DT::datatable(tempDep)
   })
   
-
   
-  
-
-
 } #end server
 
 shinyApp(ui, server)
