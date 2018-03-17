@@ -16,7 +16,6 @@ library(DT)
 library(plotly)
 library(lubridate)
 library(dplyr)
-library(plyr)
 
 # Import all months and then create a single master sheet of all months of flight data
 january <- read.table(file = "january.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
@@ -55,7 +54,9 @@ november$V20 <- NULL
 december <- read.table(file = "december.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
 december$V20 <- NULL
 
-master <- rbind(january, february)
+master <- c()
+master <- rbind(master, january)
+master <- rbind(master, february)
 master <- rbind(master, march)
 master <- rbind(master, april)
 master <- rbind(master, may)
@@ -101,7 +102,8 @@ ui <- dashboardPage(
 
   dashboardBody(
     DT::dataTableOutput("tabl1"),
-    DT::dataTableOutput("carrierArrDep")
+    DT::dataTableOutput("carrierArr"),
+    DT::dataTableOutput("carrierDep")
   ) #end dashboardBody
 
 ) #end dashboardPage
@@ -121,15 +123,27 @@ server <- function(input, output) {
   })
   
   
-  output$carrierArrDep <- DT::renderDataTable({
+  output$carrierArr <- DT::renderDataTable({
     #Arrivals
     tempArr <- group_by(master, CARRIER)
     tempArr <- filter(tempArr, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
     tempArr <- filter(tempArr, ORIGIN_AIRPORT_ID == 13930)
-    tempArr <- count(tempArr, 'CARRIER')
+    tempArr <- count(tempArr, "CARRIER")
+    tempArr[2] <- NULL
 
     DT::datatable(tempArr)
     
+  })
+  
+  output$carrierDep <- DT::renderDataTable({
+    #Departures
+    tempDep <- group_by(master, CARRIER)
+    tempDep <- filter(tempDep, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    tempDep <- filter(tempDep, DEST_AIRPORT_ID == 13930)
+    tempDep <- count(tempDep, 'CARRIER')
+    tempArr[2] <- NULL
+    
+    DT::datatable(tempDep)
   })
   
 
