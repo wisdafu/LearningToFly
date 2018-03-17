@@ -95,17 +95,20 @@ ui <- dashboardPage(
   dashboardSidebar(
     sidebarMenu(
       # Create input selection for months
-      selectInput("months", "Select a month", c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"), selected = "Jan")
-    
+      selectInput("months", "Select a month", c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"), selected = "Jan"
+                  ),
+      radioButtons("airport", "Airport:",
+                   c("O'Hare" = 13930,
+                     "Midway" = 13232)
+                   )
     ) #end sidebarmenu
   ), #end dashboardSidebar
-
+  
   dashboardBody(
     DT::dataTableOutput("tabl1"),
-    DT::dataTableOutput("carrierArrDepOhare"),
-    DT::dataTableOutput("carrierDep")
+    DT::dataTableOutput("carrierArrDep")
   ) #end dashboardBody
-
+  
 ) #end dashboardPage
 
 server <- function(input, output) { 
@@ -115,6 +118,11 @@ server <- function(input, output) {
     match(input$months, month.abb)
   })
   
+  airportID <- reactive({
+    input$airport
+  })
+  
+  
   # Displays all data filtered by month
   output$tabl1 <- DT::renderDataTable({
     
@@ -123,29 +131,30 @@ server <- function(input, output) {
   })
   
   
-  output$carrierArrDepOhare <- DT::renderDataTable({
+  output$carrierArrDep <- DT::renderDataTable({
     #Arrivals and Departures OHare
     tempArr <- group_by(master, CARRIER)
     tempArr <- filter(tempArr, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
-    tempArr <- filter(tempArr, ORIGIN_AIRPORT_ID == 13930)
+    tempArr <- filter(tempArr, ORIGIN_AIRPORT_ID == airportID())
     tempArr <- count(tempArr, "CARRIER")
     tempArr[2] <- NULL
+    
     tempDep <- group_by(master, CARRIER)
     tempDep <- filter(tempDep, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
-    tempDep <- filter(tempDep, DEST_AIRPORT_ID == 13930)
+    tempDep <- filter(tempDep, DEST_AIRPORT_ID == airportID())
     tempDep <- count(tempDep, 'CARRIER')
     names(tempArr)[2] <- 'Arrivals'
     tempArr$Departures <- tempDep$n
-
+    
     DT::datatable(tempArr)
     
   })
   
   
+  
+  
+  
+  
 } #end server
 
 shinyApp(ui, server)
-
-
-
-
