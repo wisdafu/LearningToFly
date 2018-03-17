@@ -102,8 +102,7 @@ ui <- dashboardPage(
 
   dashboardBody(
     DT::dataTableOutput("tabl1"),
-    DT::dataTableOutput("carrierArrDepOhare"),
-    DT::dataTableOutput("carrierDep")
+    DT::dataTableOutput("carrierArrDepOhare")
   ) #end dashboardBody
 
 ) #end dashboardPage
