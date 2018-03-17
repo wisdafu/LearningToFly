@@ -106,7 +106,8 @@ ui <- dashboardPage(
   
   dashboardBody(
     DT::dataTableOutput("tabl1"),
-    DT::dataTableOutput("carrierArrDep")
+    DT::dataTableOutput("carrierArrDep"),
+    DT::dataTableOutput("daysArrDep")
   ) #end dashboardBody
   
 ) #end dashboardPage
@@ -132,7 +133,7 @@ server <- function(input, output) {
   
   
   output$carrierArrDep <- DT::renderDataTable({
-    #Arrivals and Departures OHare
+    #Arrivals and Departures by carrier
     tempArr <- group_by(master, CARRIER)
     tempArr <- filter(tempArr, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
     tempArr <- filter(tempArr, ORIGIN_AIRPORT_ID == airportID())
@@ -144,6 +145,27 @@ server <- function(input, output) {
     tempDep <- filter(tempDep, DEST_AIRPORT_ID == airportID())
     tempDep <- count(tempDep, 'CARRIER')
     names(tempArr)[2] <- 'Arrivals'
+    tempArr$Departures <- tempDep$n
+    
+    DT::datatable(tempArr)
+    
+  })
+  
+  output$daysArrDep <- DT::renderDataTable({
+    #Arrivals and Departures by days
+    tempArr <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    tempArr <- filter(tempArr, ORIGIN_AIRPORT_ID == airportID())
+    tempArr$Day <- weekdays(as.Date(tempArr$FL_DATE))
+    tempArr <- group_by(tempArr, Day)
+    tempArr <- count(tempArr, 'Day')
+    tempArr[2] <- NULL
+    names(tempArr)[2] <- 'Arrivals'
+    
+    tempDep <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    tempDep <- filter(tempDep, DEST_AIRPORT_ID == airportID())
+    tempDep$Day <- weekdays(as.Date(tempDep$FL_DATE))
+    tempDep <- group_by(tempDep, Day)
+    tempDep <- count(tempDep, 'Day')
     tempArr$Departures <- tempDep$n
     
     DT::datatable(tempArr)
