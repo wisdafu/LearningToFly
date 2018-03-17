@@ -107,7 +107,8 @@ ui <- dashboardPage(
   dashboardBody(
     DT::dataTableOutput("tabl1"),
     DT::dataTableOutput("carrierArrDep"),
-    DT::dataTableOutput("daysArrDep")
+    DT::dataTableOutput("daysArrDep"),
+    DT::dataTableOutput("hourlyDelays")
   ) #end dashboardBody
   
 ) #end dashboardPage
@@ -169,6 +170,20 @@ server <- function(input, output) {
     tempArr$Departures <- tempDep$n
     
     DT::datatable(tempArr)
+    
+  })
+  
+  output$hourlyDelays <- DT::renderDataTable({
+    #Hourly delays chart
+    tempDel <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    tempDel <- filter(tempDel, ORIGIN_AIRPORT_ID == airportID())
+    tempDel <- filter(tempDel, CANCELLED == 1)
+    tempDel <- mutate(tempDel, HOUR = format(as.POSIXct(DEP_TIME, format="%H:%M"),"%H"))
+    tempDel <- group_by(tempDel, HOUR)
+    tempDel <- count(tempDel, HOUR)
+    names(tempDel)[2] <- 'Delays'
+    
+    DT::datatable(tempDel)
     
   })
   
