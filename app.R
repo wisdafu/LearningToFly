@@ -97,6 +97,10 @@ ui <- dashboardPage(
       # Create input selection for months
       selectInput("months", "Select a month", c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"), selected = "Jan"
       ),
+      
+      selectInput("arrDepList", label = "Arrivals or Departures:", choices = list(" " = c("Arrivals", "Departures"))
+      ),
+      
       radioButtons("airport", "Airport:",
                    c("O'Hare" = 13930,
                      "Midway" = 13232)
@@ -105,10 +109,29 @@ ui <- dashboardPage(
   ), #end dashboardSidebar
   
   dashboardBody(
-    DT::dataTableOutput("tabl1"),
-    DT::dataTableOutput("carrierArrDep"),
-    DT::dataTableOutput("daysArrDep"),
-    DT::dataTableOutput("hourlyDelays")
+    fluidRow(
+      box(
+        title = "Airline Carrier Flight Counts as Pie", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("carrierArrDepPie")
+      ),
+      box(
+        title = "Airline Carrier Flight Counts as Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("carrierArrDep")
+      )
+    ), #end fluidRow
+    
+    fluidRow(
+      box(
+        title = "Flights by day of the week as Pie", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("daysOfWeekPie")
+      ),
+      box(
+        title = "Flights by day of the week as Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("daysArrDep")
+      )
+    ), #end fluidRow
+    fluidRow(
+      box(
+        title = "Hourly Delays Table", solidHeader = TRUE, status = "primary", width = 4, dataTableOutput("hourlyDelays")
+      )
+    )
+    
   ) #end dashboardBody
   
 ) #end dashboardPage
@@ -124,6 +147,10 @@ server <- function(input, output) {
     input$airport
   })
   
+  arrDepChoice <- reactive ({
+    input$arrDepList
+  })
+  
   
   # Displays all data filtered by month
   output$tabl1 <- DT::renderDataTable({
@@ -132,23 +159,68 @@ server <- function(input, output) {
     
   })
   
-  
-  output$carrierArrDep <- DT::renderDataTable({
-    #Arrivals and Departures by carrier
+  output$carrierArrDepPie <- renderPlotly({
     tempArr <- group_by(master, CARRIER)
-    tempArr <- filter(tempArr, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    tempArr <- filter(tempArr, as.numeric(format(FL_DATE, "%m")) == monthNum())
     tempArr <- filter(tempArr, ORIGIN_AIRPORT_ID == airportID())
     tempArr <- count(tempArr, "CARRIER")
     tempArr[2] <- NULL
     
     tempDep <- group_by(master, CARRIER)
-    tempDep <- filter(tempDep, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    tempDep <- filter(tempDep, as.numeric(format(FL_DATE, "%m")) == monthNum())
     tempDep <- filter(tempDep, DEST_AIRPORT_ID == airportID())
     tempDep <- count(tempDep, 'CARRIER')
+    tempDep[2] <- NULL
+    
+    pieData <- switch(input$arrDepList,
+    "Arrivals" = tempArr, "Departures" = tempDep)
+    
+    plot_ly(pieData, labels = ~pieData$CARRIER, values = ~pieData$n, type = "pie") %>%
+      layout(xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+             yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+  })
+  
+  
+  output$daysOfWeekPie <- renderPlotly({
+    #Arrivals and Departures by days
+    tempArr <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    tempArr <- filter(tempArr, ORIGIN_AIRPORT_ID == airportID())
+    tempArr$Day <- weekdays(as.Date(tempArr$FL_DATE))
+    tempArr <- group_by(tempArr, Day)
+    tempArr <- count(tempArr, 'Day')
+    tempArr[2] <- NULL
+
+    tempDep <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    tempDep <- filter(tempDep, DEST_AIRPORT_ID == airportID())
+    tempDep$Day <- weekdays(as.Date(tempDep$FL_DATE))
+    tempDep <- group_by(tempDep, Day)
+    tempDep <- count(tempDep, 'Day')
+    tempDep[2] <- NULL
+
+    pieData <- switch(input$arrDepList,
+                      "Arrivals" = tempArr, "Departures" = tempDep)
+    
+    plot_ly(pieData, labels = ~pieData$Day, values = ~pieData$n, type = "pie") %>%
+      layout(xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+             yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+  })
+  
+  output$carrierArrDep <- DT::renderDataTable({
+    #Arrivals and Departures by carrier
+    tempArr <- group_by(master, CARRIER)
+    tempArr <- filter(tempArr, as.numeric(format(FL_DATE, "%m")) == monthNum())
+    tempArr <- filter(tempArr, ORIGIN_AIRPORT_ID == airportID())
+    tempArr <- count(tempArr, "Carrier")
+    tempArr[2] <- NULL
+    
+    tempDep <- group_by(master, CARRIER)
+    tempDep <- filter(tempDep, as.numeric(format(FL_DATE, "%m")) == monthNum())
+    tempDep <- filter(tempDep, DEST_AIRPORT_ID == airportID())
+    tempDep <- count(tempDep, 'Carrier')
     names(tempArr)[2] <- 'Arrivals'
     tempArr$Departures <- tempDep$n
     
-    DT::datatable(tempArr)
+    DT::datatable(tempArr, options = list(pageLength = 10, lengthChange = FALSE, searching = FALSE))
     
   })
   
