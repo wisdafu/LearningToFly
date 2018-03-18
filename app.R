@@ -68,10 +68,12 @@ master <- rbind(master, october)
 master <- rbind(master, november)
 master <- rbind(master, december)
 
+# Rename headers
 headers <- c("FL_DATE","AIRLINE_ID","CARRIER","FL_NUM","ORIGIN_AIRPORT_ID","ORIGIN_CITY_NAME","DEST_AIRPORT_ID","DEST_CITY_NAME","DEP_TIME","ARR_TIME","CANCELLED","CANCELLATION_CODE","AIR_TIME","DISTANCE","CARRIER_DELAY","WEATHER_DELAY","NAS_DELAY","SECURITY_DELAY","LATE_AIRCRAFT_DELAY")
 colnames(master) <- headers
 master$FL_DATE <- as.Date(master$FL_DATE, "%Y-%m-%d")
 
+# Format times
 master$DEP_TIME <- sprintf("%04d", master$DEP_TIME)
 master$DEP_TIME <- as.POSIXct(master$DEP_TIME,tz="","%H%M")
 master$DEP_TIME <- format(master$DEP_TIME, "%H:%M")
@@ -80,27 +82,28 @@ master$ARR_TIME <- sprintf("%04d", master$ARR_TIME)
 master$ARR_TIME <- as.POSIXct(master$ARR_TIME,tz="","%H%M")
 master$ARR_TIME <- format(master$ARR_TIME, "%H:%M")
 
-#
-# NOTE: Airport IDs
-#   - Midway = 13232
-#   - O'Hare = 13930
-#
-
 # Shiny Dashboard
 
 ui <- dashboardPage(
   
   # Create dashboard header
   dashboardHeader(title = "Project 2"),
+  
+  # Sidebar
   dashboardSidebar(
+    
+    # Sidebar contains input that changes respective graphs based on what is currently selected
     sidebarMenu(
+      
       # Create input selection for months
       selectInput("months", "Select a month", c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"), selected = "Jan"
       ),
       
+      # Create input selection for arrivals and departures
       selectInput("arrDepList", label = "Arrivals or Departures:", choices = list(" " = c("Arrivals", "Departures"))
       ),
       
+      # Create radio buttons to switch between O'Hare and Midway
       radioButtons("airport", "Airport:",
                    c("O'Hare" = 13930,
                      "Midway" = 13232)
@@ -108,6 +111,7 @@ ui <- dashboardPage(
     ) #end sidebarmenu
   ), #end dashboardSidebar
   
+  # Main content
   dashboardBody(
     fluidRow(
       box(
@@ -143,38 +147,46 @@ server <- function(input, output) {
     match(input$months, month.abb)
   })
   
+  # aiportID is ID of O'Hare and Midway
   airportID <- reactive({
     input$airport
   })
   
+  # Focus on arrival or departure data
   arrDepChoice <- reactive ({
     input$arrDepList
   })
   
+  # NOTE: when using these variables, you have to append () e.g. x == monthNum()
   
-  # Displays all data filtered by month
+  # Master sheet -- Displays all data filtered by month
   output$tabl1 <- DT::renderDataTable({
     
     DT::datatable(master[month(master$FL_DATE) == monthNum(),])
     
   })
   
+  # Carrier pie chart
   output$carrierArrDepPie <- renderPlotly({
+    
+    # Filtering data that will be displayed
     tempArr <- group_by(master, CARRIER)
     tempArr <- filter(tempArr, as.numeric(format(FL_DATE, "%m")) == monthNum())
     tempArr <- filter(tempArr, ORIGIN_AIRPORT_ID == airportID())
-    tempArr <- count(tempArr, "CARRIER")
+    tempArr <- count(tempArr, "Carrier")
     tempArr[2] <- NULL
     
     tempDep <- group_by(master, CARRIER)
     tempDep <- filter(tempDep, as.numeric(format(FL_DATE, "%m")) == monthNum())
     tempDep <- filter(tempDep, DEST_AIRPORT_ID == airportID())
-    tempDep <- count(tempDep, 'CARRIER')
+    tempDep <- count(tempDep, 'Carrier')
     tempDep[2] <- NULL
     
+    # Get data depending on what is currently selected (Arrival/Departure)
     pieData <- switch(input$arrDepList,
     "Arrivals" = tempArr, "Departures" = tempDep)
     
+    # Create the actual plot
     plot_ly(pieData, labels = ~pieData$CARRIER, values = ~pieData$n, type = "pie") %>%
       layout(xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
              yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
@@ -258,11 +270,6 @@ server <- function(input, output) {
     DT::datatable(tempDel)
     
   })
-  
-  
-  
-  
-  
   
 } #end server
 
