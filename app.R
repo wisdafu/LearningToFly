@@ -96,7 +96,7 @@ ui <- dashboardPage(
     sidebarMenu(
       
       # Create input selection for months
-      selectInput("months", "Select a month", c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"), selected = "Jan"
+      selectInput("months", "Month:", c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"), selected = "Jan"
       ),
       
       # Create input selection for arrivals and departures
@@ -134,6 +134,11 @@ ui <- dashboardPage(
       box(
         title = "Hourly Delays Table", solidHeader = TRUE, status = "primary", width = 4, dataTableOutput("hourlyDelays")
       )
+    ),
+    fluidRow(
+      box(
+        title = "Flight count over time", solidHeader = TRUE, status = "primary", width = 6, plotOutput("carrierArrDepLine")
+      )
     )
     
   ) #end dashboardBody
@@ -168,7 +173,6 @@ server <- function(input, output) {
   
   # Carrier pie chart
   output$carrierArrDepPie <- renderPlotly({
-    
     # Filtering data that will be displayed
     tempArr <- group_by(master, CARRIER)
     tempArr <- filter(tempArr, as.numeric(format(FL_DATE, "%m")) == monthNum())
@@ -269,6 +273,33 @@ server <- function(input, output) {
     
     DT::datatable(tempDel)
     
+  })
+  
+  # Grade B Plots
+  
+  
+  # TODO: Create subset of data that has count for each day (e.g. 200 arrival flights on 2017-01-22)
+  #       Then, plot data as a line graph from 2017-01-01 to 2017-12-31
+  
+  output$carrierArrDepLine <- renderPlotly({
+    # Filtering data that will be displayed
+    tempArr <- group_by(master, FL_DATE)
+    tempArr <- filter(tempArr, ORIGIN_AIRPORT_ID == airportID())
+    tempArr[2] <- NULL
+    
+    tempDep <- group_by(master, FL_DATE)
+    tempDep <- filter(tempDep, DEST_AIRPORT_ID == airportID())
+    tempDep[2] <- NULL
+    
+    # Get data depending on what is currently selected (Arrival/Departure)
+    pieData <- switch(input$arrDepList,
+                      "Arrivals" = tempArr, "Departures" = tempDep)
+    
+    
+    ggplot(pieData, aes(x = pieData$FL_DATE, y = pieData$n)) +
+      geom_line() +
+      labs(x="Date", y = "Count") + 
+      coord_cartesian(xlim = as.Date(c("2017-01-01", "2017-12-31")), ylim = c(0,70000)) 
   })
   
 } #end server
