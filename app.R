@@ -359,6 +359,8 @@ server <- function(input, output) {
     temp15 <- ungroup(temp15)
     temp15 <- arrange(temp15, desc(Destinations))
     
+    
+    
     DT::datatable(temp15[1:15,])
     
   })
