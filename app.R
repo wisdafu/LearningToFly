@@ -335,9 +335,9 @@ server <- function(input, output) {
     tempDel$Arrivals <- tempDel2$Arrivals
     
     if(hourSetting() == 12){
-    ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) +
-     geom_line(aes(y=tempDel$Departures, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
-     scale_color_manual(name = "Legend", values = c("blue1", "red2")) 
+    ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) + geom_point() +
+     geom_line(aes(y=tempDel$Departures, color = "Departures")) +  geom_point() + labs(x="Hour", y="Number of Flights") + 
+     scale_color_manual(name = "Legend", values = c("deepskyblue", "chocolate1")) 
     }else{
     ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) +
       geom_line(aes(y=tempDel$Departures, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
@@ -346,7 +346,7 @@ server <- function(input, output) {
                                 "12" = "12:00:pm", "13" = "1:00pm", "14" = "2:00pm", "15" = "3:00pm", "16" = "4:00pm", "17" = "5:00pm", 
                                 "18" = "6:00pm", "19" = "7:00pm", "20" = "8:00pm", "21" = "9:00pm", "22" = "10:00pm", "23" = "11:00pm")) +
       theme(axis.text.x = element_text(angle=45)) +
-      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+      scale_color_manual(name = "Legend", values = c("deepskyblue", "chocolate1"))  
   }
   })
   
