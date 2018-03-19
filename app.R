@@ -132,7 +132,7 @@ ui <- dashboardPage(
     ), #end fluidRow
     fluidRow(
       box(
-        title = "Hourly Arrivals and Departures as Line", solidHeader = TRUE, status = "primary", width = 6, plotOutput("hourlyArrivalsandDeparturesLineGraph")
+        title = "Hourly Arrivals and Departures as Line", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("hourlyArrivalsandDeparturesLineGraph")
       ),
       box(
         title = "Hourly Arrivals and Departures Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("hourlyArrivalsandDeparturesTable")
@@ -301,7 +301,7 @@ server <- function(input, output) {
     
   })
   
-  output$hourlyArrivalsandDeparturesLineGraph <- renderPlot({
+  output$hourlyArrivalsandDeparturesLineGraph <- renderPlotly({
     tempDel <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
     tempDel <- filter(tempDel, ORIGIN_AIRPORT_ID == airportID())
     tempDel <- filter(tempDel, DEP_TIME != "NA")
@@ -320,9 +320,16 @@ server <- function(input, output) {
     
     tempDel$Arrivals <- tempDel2$Arrivals
     
-    ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) +
-     geom_line(aes(y=tempDel$Departures, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
-     scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+    # Get data depending on what is currently selected (Arrival/Departure)
+    pieData <- switch(input$arrDepList,
+                      "Arrivals" = tempDel$Arrivals, "Departures" = tempDel$Departures)
+    
+    # TODO" $DISTANCE is obvi wrong here, just wanted to make sure the graph worked.
+    plot_ly(pieData, x = ~pieData$FL_DATE, y = ~pieData$DISTANCE, type = 'scatter', mode = 'lines')
+    
+   # ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) +
+    # geom_line(aes(y=tempDel$Departures, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
+     #scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
   })
   
   output$hourlyDelays <- DT::renderDataTable({
