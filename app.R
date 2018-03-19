@@ -416,8 +416,7 @@ server <- function(input, output) {
     names(temp15)[1] <- 'Destination Airports'
     temp15 <- ungroup(temp15)
     temp15 <- arrange(temp15, desc(Destinations))
-    
-    
+    temp15$`Destination Airports` <- airlineLookup$Description[match(temp15$`Destination Airports`, airlineLookup$Code)]
     
     DT::datatable(temp15[1:15,])
     
@@ -433,6 +432,7 @@ server <- function(input, output) {
     names(temp15)[1] <- 'Arrival Airports'
     temp15 <- ungroup(temp15)
     temp15 <- arrange(temp15, desc(Arrivals))
+    temp15$`Arrival Airports` <- airlineLookup$Description[match(temp15$`Arrival Airports`, airlineLookup$Code)]
     
     DT::datatable(temp15[1:15,])
     
