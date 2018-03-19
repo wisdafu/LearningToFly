@@ -108,6 +108,12 @@ ui <- dashboardPage(
       radioButtons("airport", "Airport:",
                    c("O'Hare" = 13930,
                      "Midway" = 13232)
+      ),
+      
+      # Radio button for the hour setting
+      radioButtons('hours', 'Hours:',
+                  c('12 Hr' = 12,
+                    '24 Hr' = 24)             
       )
     ) #end sidebarmenu
   ), #end dashboardSidebar
@@ -177,6 +183,10 @@ server <- function(input, output) {
   # Focus on arrival or departure data
   arrDepChoice <- reactive ({
     input$arrDepList
+  })
+  
+  hourSetting <- reactive ({
+    input$hours
   })
   
   # NOTE: when using these variables, you have to append () e.g. x == monthNum()
