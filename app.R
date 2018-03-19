@@ -82,8 +82,9 @@ master$ARR_TIME <- sprintf("%04d", master$ARR_TIME)
 master$ARR_TIME <- as.POSIXct(master$ARR_TIME,tz="","%H%M")
 master$ARR_TIME <- format(master$ARR_TIME, "%H:%M")
 
-# Shiny Dashboard
+airlineLookup <- read.table(file = "airline.csv", sep = ",", header = TRUE, stringsAsFactors = FALSE)
 
+# Shiny Dashboard
 ui <- dashboardPage(
   
   # Create dashboard header
