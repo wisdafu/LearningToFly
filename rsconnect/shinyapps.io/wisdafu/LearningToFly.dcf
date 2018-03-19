@@ -5,8 +5,8 @@ account: wisdafu
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 293520
-bundleId: 1255856
+bundleId: 1277340
 url: https://wisdafu.shinyapps.io/LearningToFly/
-when: 1520371232.88836
+when: 1521497692.12688
 asMultiple: FALSE
 asStatic: FALSE

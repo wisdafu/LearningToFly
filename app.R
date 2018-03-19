@@ -16,42 +16,43 @@ library(DT)
 library(plotly)
 library(lubridate)
 library(dplyr)
+library(data.table)
 
 # Import all months and then create a single master sheet of all months of flight data
-january <- read.table(file = "january.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+january <- data.table::fread(file = "january.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
 january$V20 <- NULL
 
-february <- read.table(file = "february.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+february <- data.table::fread(file = "february.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
 february$V20 <- NULL
 
-march <- read.table(file = "march.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+march <- data.table::fread(file = "march.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
 march$V20 <- NULL
 
-april <- read.table(file = "april.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+april <- data.table::fread(file = "april.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
 april$V20 <- NULL
 
-may <- read.table(file = "may.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+may <- data.table::fread(file = "may.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
 may$V20 <- NULL
 
-june <- read.table(file = "june.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+june <- data.table::fread(file = "june.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
 june$V20 <- NULL
 
-july <- read.table(file = "july.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+july <- data.table::fread(file = "july.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
 july$V20 <- NULL
 
-august <- read.table(file = "august.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+august <- data.table::fread(file = "august.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
 august$V20 <- NULL
 
-september <- read.table(file = "september.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+september <- data.table::fread(file = "september.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
 september$V20 <- NULL
 
-october <- read.table(file = "october.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+october <- data.table::fread(file = "october.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
 october$V20 <- NULL
 
-november <- read.table(file = "november.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+november <- data.table::fread(file = "november.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
 november$V20 <- NULL
 
-december <- read.table(file = "december.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
+december <- data.table::fread(file = "december.cleaned.csv", sep = "\t", header = FALSE, stringsAsFactors = FALSE)
 december$V20 <- NULL
 
 master <- c()
@@ -82,7 +83,7 @@ master$ARR_TIME <- sprintf("%04d", master$ARR_TIME)
 master$ARR_TIME <- as.POSIXct(master$ARR_TIME,tz="","%H%M")
 master$ARR_TIME <- format(master$ARR_TIME, "%H:%M")
 
-airlineLookup <- read.table(file = "airline.csv", sep = ",", header = TRUE, stringsAsFactors = FALSE)
+airlineLookup <- data.table::fread(file = "airline.csv", sep = ",", header = TRUE, stringsAsFactors = FALSE)
 
 # Shiny Dashboard
 ui <- dashboardPage(
