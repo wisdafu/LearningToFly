@@ -335,8 +335,8 @@ server <- function(input, output) {
     tempDel$Arrivals <- tempDel2$Arrivals
     
     if(hourSetting() == 12){
-    ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) + geom_point() +
-     geom_line(aes(y=tempDel$Departures, color = "Departures")) +  geom_point() + labs(x="Hour", y="Number of Flights") + 
+    ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) +
+     geom_line(aes(y=tempDel$Departures, color = "Departures")) + labs(x="Hour", y="Number of Flights") + 
      scale_color_manual(name = "Legend", values = c("deepskyblue", "chocolate1")) 
     }else{
     ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) +
