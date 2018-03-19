@@ -142,7 +142,10 @@ ui <- dashboardPage(
         title = "Hourly Arrivals and Departures as Line", solidHeader = TRUE, status = "primary", width = 6, plotOutput("hourlyArrivalsandDeparturesLineGraph")
       ),
       box(
-        title = "Hourly Arrivals and Departures Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("hourlyArrivalsandDeparturesTable")
+        title = "Hourly Arrivals Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("hourlyArrivalsTable")
+      ),
+      box(
+        title = "Hourly Departures Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("hourlyDeparturesTable")
       )
     ),
     fluidRow(
@@ -342,29 +345,39 @@ server <- function(input, output) {
       scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
   })
   
-  output$hourlyArrivalsandDeparturesTable <- DT::renderDataTable({
+  output$hourlyDeparturesTable <- DT::renderDataTable({
     #not using the same mutate filter function because then it misses some hour rows, can change this later.
     tempDel <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
     tempDel <- filter(tempDel, ORIGIN_AIRPORT_ID == airportID())
     tempDel <- filter(tempDel, DEP_TIME != "NA")
-    tempDel$HOUR <- hour(ymd_hm(paste(tempDel$FL_DATE, tempDel$DEP_TIME)))
-    tempDel <-as.data.frame(table(factor(tempDel$HOUR, levels = 0:23)))
-    tempDel$Var1 <- format(as.POSIXct(tempDel$Var1, format = "%H"),"%H")
-    names(tempDel)[1] <- "Hour"
-    names(tempDel)[2] <- 'Departures'
+    if(hourSetting() == 12){
+      tempDel$HOUR <- format(strptime(tempDel$DEP_TIME, "%H:%M"), format="%I %p")
+    }else{
+      tempDel$HOUR <- format(strptime(tempDel$DEP_TIME, "%H:%M"), format="%H")
+    }
+    tempDel <- group_by(tempDel, HOUR)
+    temp <- count(tempDel, HOUR)
+    names(temp)[1] <- "Hour"
+    names(temp)[2] <- 'Departures'
+    DT::datatable(temp, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
+  })
+  
+  output$hourlyArrivalsTable <- DT::renderDataTable({
     
     tempDel2 <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
     tempDel2 <- filter(tempDel2, DEST_AIRPORT_ID == airportID())
     tempDel2 <- filter(tempDel2, ARR_TIME != "NA")
-    tempDel2$HOUR <- hour(ymd_hm(paste(tempDel2$FL_DATE, tempDel2$ARR_TIME)))
-    tempDel2 <-as.data.frame(table(factor(tempDel2$HOUR, levels = 0:23)))
-    tempDel2$Var1 <- format(as.POSIXct(tempDel2$Var1, format = "%H"),"%H")
-    names(tempDel2)[1] <- "Hour"
-    names(tempDel2)[2] <- 'Arrivals'
-    
-    tempDel$Arrivals <- tempDel2$Arrivals
+    if(hourSetting() == 12){
+      tempDel2$HOUR <- format(strptime(tempDel2$ARR_TIME, "%H:%M"), format="%I %p")
+    }else{
+      tempDel2$HOUR <- format(strptime(tempDel2$ARR_TIME, "%H:%M"), format="%H")
+    }
+    tempDel2 <- group_by(tempDel2, HOUR)
+    temp2 <- count(tempDel2, HOUR)
+    names(temp2)[1] <- "Hour"
+    names(temp2)[2] <- 'Departures'
    
-     DT::datatable(tempDel, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
+     DT::datatable(temp2, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
     
   })
   
