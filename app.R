@@ -148,12 +148,10 @@ ui <- dashboardPage(
     ),
     fluidRow(
       box(
-        title = "Hourly Delays Table", solidHeader = TRUE, status = "primary", width = 4, dataTableOutput("hourlyDelays")
-      )
-    ),
-    fluidRow(
-      box(
         title = "Flight count over time", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("carrierArrDepLine")
+      ),
+      box(
+        title = "Hourly Delays Table", solidHeader = TRUE, status = "primary", width = 4, dataTableOutput("hourlyDelays")
       )
     ),
     fluidRow(
