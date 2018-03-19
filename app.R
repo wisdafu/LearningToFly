@@ -137,7 +137,7 @@ ui <- dashboardPage(
     ),
     fluidRow(
       box(
-        title = "Flight count over time", solidHeader = TRUE, status = "primary", width = 6, plotOutput("carrierArrDepLine")
+        title = "Flight count over time", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("carrierArrDepLine")
       )
     )
     
@@ -295,11 +295,8 @@ server <- function(input, output) {
     pieData <- switch(input$arrDepList,
                       "Arrivals" = tempArr, "Departures" = tempDep)
     
-    
-    ggplot(pieData, aes(x = pieData$FL_DATE, y = pieData$n)) +
-      geom_line() +
-      labs(x="Date", y = "Count") + 
-      coord_cartesian(xlim = as.Date(c("2017-01-01", "2017-12-31")), ylim = c(0,70000)) 
+    # TODO" $DISTANCE is obvi wrong here, just wanted to make sure the graph worked.
+    plot_ly(pieData, x = ~pieData$FL_DATE, y = ~pieData$DISTANCE, type = 'scatter', mode = 'lines')
   })
   
 } #end server
