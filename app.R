@@ -363,6 +363,9 @@ server <- function(input, output) {
     names(tempDel)[2] <- 'Delays'
     tempDel <- filter(tempDel, Delays != 0)
     
+    #average function found https://stackoverflow.com/questions/24576515/relative-frequencies-proportions-with-dplyr
+    tempDel<- tempDel %>% mutate('Percentage of Total' = paste0(round(100*Delays / sum(Delays), 0), "%"))
+    
     if(hourSetting() == 12){
       tempDel$Hour <- format(strptime(tempDel$Hour, "%H"),"%H")
     }else{
