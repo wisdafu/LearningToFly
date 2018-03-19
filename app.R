@@ -165,10 +165,26 @@ ui <- dashboardPage(
       )
     )
     ),
-    tabPanel("12 Months", 
+    tabPanel("12 Months",
              fluidRow(
                box(
-                 title = "12 Months of Delays", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput('delays12Mon')
+                 title = "Arrivals and Departures by Carrier Over 12 Months", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput('carrierArrDep12Mon')
+               ),
+               box(
+                 title = "Hourly Arrivals and Departures Over 12 Months", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput('hourlyArrDep12Mon')
+               )
+             ),
+             fluidRow(
+               box(
+                 title = "15 Most Popular Destination Airports Over 12 Months", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput('top15Arr12Mon')
+               ),
+               box(
+                 title = "15 Most Popular Destination Airports Over 12 Months", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput('top15Dest12Mon')
+               )
+             ),
+             fluidRow(
+               box(
+                 title = "Delays Over 12 Months", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput('delays12Mon')
                )
              )
     )
