@@ -132,10 +132,10 @@ ui <- dashboardPage(
     ), #end fluidRow
     fluidRow(
       box(
-        title = "Hourly Arrivals and Departures as Line", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("hourlyArrivalsandDeparturesLineGraph")
+        title = "Hourly Arrivals and Departures as Line", solidHeader = TRUE, status = "primary", width = 6, plotOutput("hourlyArrivalsAndDepartureLineGraph24")
       ),
       box(
-        title = "Hourly Arrivals and Departures Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("hourlyArrivalsandDeparturesTable")
+        title = "Hourly Arrivals and Departures Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("hourlyArrivalsandDepartureTable24")
       )
     ),
     fluidRow(
@@ -277,6 +277,61 @@ server <- function(input, output) {
     
   })
   
+  output$hourlyArrivalsandDepartureTable24 <- DT::renderDataTable({
+    #not using the same mutate filter function because then it misses some hour rows, can change this later.
+    tempDel <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    tempDel <- filter(tempDel, ORIGIN_AIRPORT_ID == airportID())
+    tempDel <- filter(tempDel, DEP_TIME != "NA")
+    tempDel$HOUR <- hour(ymd_hm(paste(tempDel$FL_DATE, tempDel$DEP_TIME)))
+    tempDel <-as.data.frame(table(factor(tempDel$HOUR, levels = 0:23)))
+    tempDel$Var1 <- format(as.POSIXct(tempDel$Var1, format = "%H"),"%H")
+    tempDel <- mutate(tempDel, Var1 = format(strptime(Var1, "%H"), '%I:%M %p'))
+    names(tempDel)[1] <- "Hour"
+    names(tempDel)[2] <- 'Departures'
+    
+    tempDel2 <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    tempDel2 <- filter(tempDel2, DEST_AIRPORT_ID == airportID())
+    tempDel2 <- filter(tempDel2, DEP_TIME != "NA")
+    tempDel2$HOUR <- hour(ymd_hm(paste(tempDel2$FL_DATE, tempDel2$DEP_TIME)))
+    tempDel2 <-as.data.frame(table(factor(tempDel2$HOUR, levels = 0:23)))
+    tempDel2$Var1 <- format(as.POSIXct(tempDel2$Var1, format = "%H"),"%H")
+    tempDel2 <- mutate(tempDel2, Var1 = format(strptime(Var1,"%H"), '%I:%M %p'))
+    names(tempDel2)[1] <- "Hour"
+    names(tempDel2)[2] <- 'Departures'
+    
+    tempDel$Arrivals <- tempDel2$Arrivals
+    
+    DT::datatable(tempDel, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
+  })
+  
+  output$hourlyArrivalsAndDepartureLineGraph24 <- DT::renderDataTable({
+    tempDel <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    tempDel <- filter(tempDel, ORIGIN_AIRPORT_ID == airportID())
+    tempDel <- filter(tempDel, DEP_TIME != "NA")
+    tempDel$HOUR <- hour(ymd_hm(paste(tempDel$FL_DATE, tempDel$DEP_TIME)))
+    tempDel <-as.data.frame(table(factor(tempDel$HOUR, levels = 0:23)))
+    tempDel$Var1 <- format(as.POSIXct(tempDel$Var1, format = "%H"),"%H")
+    tempDel <- mutate(tempDel, Var1 = format(strptime(Var1, "%H"), '%I:%M %p'))
+    names(tempDel)[1] <- "Hour"
+    names(tempDel)[2] <- 'Departures'
+    
+    tempDel2 <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    tempDel2 <- filter(tempDel2, DEST_AIRPORT_ID == airportID())
+    tempDel2 <- filter(tempDel2, DEP_TIME != "NA")
+    tempDel2$HOUR <- hour(ymd_hm(paste(tempDel2$FL_DATE, tempDel2$DEP_TIME)))
+    tempDel2 <-as.data.frame(table(factor(tempDel2$HOUR, levels = 0:23)))
+    tempDel2$Var1 <- format(as.POSIXct(tempDel2$Var1, format = "%H"),"%H")
+    tempDel2 <- mutate(tempDel2, Var1 = format(strptime(Var1,"%H"), '%I:%M %p'))
+    names(tempDel2)[1] <- "Hour"
+    names(tempDel2)[2] <- 'Departures'
+    
+    tempDel$Arrivals <- tempDel2$Arrivals
+    
+    ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) +
+      geom_line(aes(y=tempDel$Departures, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
+      scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+  })
+  
   output$hourlyArrivalsandDeparturesTable <- DT::renderDataTable({
     #not using the same mutate filter function because then it misses some hour rows, can change this later.
     tempDel <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
@@ -284,14 +339,16 @@ server <- function(input, output) {
     tempDel <- filter(tempDel, DEP_TIME != "NA")
     tempDel$HOUR <- hour(ymd_hm(paste(tempDel$FL_DATE, tempDel$DEP_TIME)))
     tempDel <-as.data.frame(table(factor(tempDel$HOUR, levels = 0:23)))
+    tempDel$Var1 <- format(as.POSIXct(tempDel$Var1, format = "%H"),"%H")
     names(tempDel)[1] <- "Hour"
     names(tempDel)[2] <- 'Departures'
     
     tempDel2 <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
-    tempDel2 <- filter(tempDel2, ORIGIN_AIRPORT_ID == airportID())
+    tempDel2 <- filter(tempDel2, DEST_AIRPORT_ID == airportID())
     tempDel2 <- filter(tempDel2, ARR_TIME != "NA")
     tempDel2$HOUR <- hour(ymd_hm(paste(tempDel2$FL_DATE, tempDel2$ARR_TIME)))
     tempDel2 <-as.data.frame(table(factor(tempDel2$HOUR, levels = 0:23)))
+    tempDel2$Var1 <- format(as.POSIXct(tempDel2$Var1, format = "%H"),"%H")
     names(tempDel2)[1] <- "Hour"
     names(tempDel2)[2] <- 'Arrivals'
     
@@ -301,7 +358,7 @@ server <- function(input, output) {
     
   })
   
-  output$hourlyArrivalsandDeparturesLineGraph <- renderPlotly({
+  output$hourlyArrivalsandDeparturesLineGraph <- renderPlot({
     tempDel <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
     tempDel <- filter(tempDel, ORIGIN_AIRPORT_ID == airportID())
     tempDel <- filter(tempDel, DEP_TIME != "NA")
@@ -311,7 +368,7 @@ server <- function(input, output) {
     names(tempDel)[2] <- 'Departures'
     
     tempDel2 <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
-    tempDel2 <- filter(tempDel2, ORIGIN_AIRPORT_ID == airportID())
+    tempDel2 <- filter(tempDel2, DEST_AIRPORT_ID == airportID())
     tempDel2 <- filter(tempDel2, ARR_TIME != "NA")
     tempDel2$HOUR <- hour(ymd_hm(paste(tempDel2$FL_DATE, tempDel2$ARR_TIME)))
     tempDel2 <-as.data.frame(table(factor(tempDel2$HOUR, levels = 0:23)))
@@ -321,15 +378,15 @@ server <- function(input, output) {
     tempDel$Arrivals <- tempDel2$Arrivals
     
     # Get data depending on what is currently selected (Arrival/Departure)
-    pieData <- switch(input$arrDepList,
-                      "Arrivals" = tempDel$Arrivals, "Departures" = tempDel$Departures)
+    #pieData <- switch(input$arrDepList,
+     #                 "Arrivals" = tempDel$Arrivals, "Departures" = tempDel$Departures)
     
     # TODO" $DISTANCE is obvi wrong here, just wanted to make sure the graph worked.
-    plot_ly(pieData, x = ~pieData$FL_DATE, y = ~pieData$DISTANCE, type = 'scatter', mode = 'lines')
+    #plot_ly(pieData, x = ~pieData$FL_DATE, y = ~pieData$DISTANCE, type = 'scatter', mode = 'lines')
     
-   # ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) +
-    # geom_line(aes(y=tempDel$Departures, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
-     #scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
+    ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) +
+     geom_line(aes(y=tempDel$Departures, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
+     scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
   })
   
   output$hourlyDelays <- DT::renderDataTable({
@@ -338,11 +395,14 @@ server <- function(input, output) {
     tempDel <- filter(tempDel, ORIGIN_AIRPORT_ID == airportID())
     tempDel <- filter(tempDel, CANCELLED == 1)
     tempDel <- mutate(tempDel, HOUR = format(as.POSIXct(DEP_TIME, format="%H:%M"),"%H"))
+    val <- sum(is.na(tempDel$DEP_TIME))
+    tempDel <- filter(tempDel, DEP_TIME != "NA")
     tempDel <- group_by(tempDel, HOUR)
     tempDel <- count(tempDel, HOUR)
     names(tempDel)[2] <- 'Delays'
+
     
-    DT::datatable(tempDel)
+    DT::datatable(tempDel, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
     
   })
   
