@@ -404,13 +404,18 @@ server <- function(input, output) {
     tempDel <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
     tempDel <- filter(tempDel, ORIGIN_AIRPORT_ID == airportID())
     tempDel <- filter(tempDel, CANCELLED == 1)
-    tempDel <- mutate(tempDel, HOUR = format(as.POSIXct(DEP_TIME, format="%H:%M"),"%H"))
     val <- sum(is.na(tempDel$DEP_TIME))
     tempDel <- filter(tempDel, DEP_TIME != "NA")
-    tempDel <- group_by(tempDel, HOUR)
-    tempDel <- count(tempDel, HOUR)
+    tempDel$HOUR <- hour(ymd_hm(paste(tempDel$FL_DATE, tempDel$DEP_TIME)))
+    #tempDel <- mutate(tempDel, HOUR = format(as.POSIXct(DEP_TIME, format="%H:%M"),"%H"))
+    tempDel <-as.data.frame(table(factor(tempDel$HOUR, levels = 0:23)))
+    names(tempDel)[1] <- 'Hour'
     names(tempDel)[2] <- 'Delays'
-
+   
+    tempDel$Hour<- format(as.POSIXct(tempDel$Hour, format = "%H"),"%H")
+    
+    #next line changes to 24 hours
+    #tempDel$Hour <- mutate(tempDel, Hour = format(strptime(Hour,"%H"), '%I:%M %p'))
     
     DT::datatable(tempDel, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
     
