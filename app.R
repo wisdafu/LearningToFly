@@ -96,7 +96,7 @@ ui <- dashboardPage(
     sidebarMenu(
       
       # Create input selection for months
-      selectInput("months", "Select a month", c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"), selected = "Jan"
+      selectInput("months", "Month:", c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"), selected = "Jan"
       ),
       
       # Create input selection for arrivals and departures
@@ -142,6 +142,19 @@ ui <- dashboardPage(
       box(
         title = "Hourly Delays Table", solidHeader = TRUE, status = "primary", width = 4, dataTableOutput("hourlyDelays")
       )
+    ),
+    fluidRow(
+      box(
+        title = "Flight count over time", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("carrierArrDepLine")
+      )
+    ),
+    fluidRow(
+      box(
+        title = "15 Most Popular Destination Airports", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("top15Dest")
+      ),
+      box(
+        title = "15 Most Popular Arrival Airports", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("top15Arr")
+      )
     )
     
   ) #end dashboardBody
@@ -176,7 +189,6 @@ server <- function(input, output) {
   
   # Carrier pie chart
   output$carrierArrDepPie <- renderPlotly({
-    
     # Filtering data that will be displayed
     tempArr <- group_by(master, CARRIER)
     tempArr <- filter(tempArr, as.numeric(format(FL_DATE, "%m")) == monthNum())
@@ -325,6 +337,60 @@ server <- function(input, output) {
     
     DT::datatable(tempDel)
     
+  })
+  
+  output$top15Dest <- DT::renderDataTable({
+    #15 Arrival and Departure Airports
+    temp <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    temp <- filter(temp, ORIGIN_AIRPORT_ID == airportID())  #Checking Popular Destinations
+    temp <- group_by(temp, DEST_AIRPORT_ID)
+    temp15 <- count(temp, DEST_AIRPORT_ID)
+    names(temp15)[2] <- 'Destinations'
+    names(temp15)[1] <- 'Destination Airports'
+    temp15 <- ungroup(temp15)
+    temp15 <- arrange(temp15, desc(Destinations))
+    
+    DT::datatable(temp15[1:15,])
+    
+  })
+  
+  output$top15Arr <- DT::renderDataTable({
+    #15 Arrival and Departure Airports
+    temp <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    temp <- filter(temp, DEST_AIRPORT_ID == airportID())  #Checking Popular Destinations
+    temp <- group_by(temp, ORIGIN_AIRPORT_ID)
+    temp15 <- count(temp, ORIGIN_AIRPORT_ID)
+    names(temp15)[2] <- 'Arrivals'
+    names(temp15)[1] <- 'Arrival Airports'
+    temp15 <- ungroup(temp15)
+    temp15 <- arrange(temp15, desc(Arrivals))
+    
+    DT::datatable(temp15[1:15,])
+    
+  })
+  
+  # Grade B Plots
+  
+  
+  # TODO: Create subset of data that has count for each day (e.g. 200 arrival flights on 2017-01-22)
+  #       Then, plot data as a line graph from 2017-01-01 to 2017-12-31
+  
+  output$carrierArrDepLine <- renderPlotly({
+    # Filtering data that will be displayed
+    tempArr <- group_by(master, FL_DATE)
+    tempArr <- filter(tempArr, ORIGIN_AIRPORT_ID == airportID())
+    tempArr[2] <- NULL
+    
+    tempDep <- group_by(master, FL_DATE)
+    tempDep <- filter(tempDep, DEST_AIRPORT_ID == airportID())
+    tempDep[2] <- NULL
+    
+    # Get data depending on what is currently selected (Arrival/Departure)
+    pieData <- switch(input$arrDepList,
+                      "Arrivals" = tempArr, "Departures" = tempDep)
+    
+    # TODO" $DISTANCE is obvi wrong here, just wanted to make sure the graph worked.
+    plot_ly(pieData, x = ~pieData$FL_DATE, y = ~pieData$DISTANCE, type = 'scatter', mode = 'lines')
   })
   
 } #end server
