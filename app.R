@@ -121,6 +121,8 @@ ui <- dashboardPage(
   
   # Main content
   dashboardBody(
+    tabsetPanel(type = "tabs",
+                tabPanel("1 Month",
     fluidRow(
       box(
         title = "Airline Carrier Flight Counts as Pie", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("carrierArrDepPie")
@@ -162,6 +164,15 @@ ui <- dashboardPage(
         title = "15 Most Popular Arrival Airports", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("top15Arr")
       )
     )
+    ),
+    tabPanel("12 Months", 
+             fluidRow(
+               box(
+                 title = "12 Months of Delays", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput('delays12Mon')
+               )
+             )
+    )
+    )   #end of tabset
     
   ) #end dashboardBody
   
