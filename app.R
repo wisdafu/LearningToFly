@@ -82,8 +82,6 @@ master$ARR_TIME <- sprintf("%04d", master$ARR_TIME)
 master$ARR_TIME <- as.POSIXct(master$ARR_TIME,tz="","%H%M")
 master$ARR_TIME <- format(master$ARR_TIME, "%H:%M")
 
-airlineLookup <- read.table(file = "airline.csv", sep = ",", header = TRUE, stringsAsFactors = FALSE)
-
 # Shiny Dashboard
 
 ui <- dashboardPage(
@@ -134,10 +132,10 @@ ui <- dashboardPage(
     ), #end fluidRow
     fluidRow(
       box(
-        title = "Hourly Arrivals and Departures as Line", solidHeader = TRUE, status = "primary", width = 6, plotOutput("hourlyArrivalsAndDepartureLineGraph24")
+        title = "Hourly Arrivals and Departures as Line", solidHeader = TRUE, status = "primary", width = 6, plotOutput("hourlyArrivalsandDeparturesLineGraph")
       ),
       box(
-        title = "Hourly Arrivals and Departures Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("hourlyArrivalsandDepartureTable24")
+        title = "Hourly Arrivals and Departures Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("hourlyArrivalsandDeparturesTable")
       )
     ),
     fluidRow(
