@@ -132,6 +132,14 @@ ui <- dashboardPage(
     ), #end fluidRow
     fluidRow(
       box(
+        title = "Hourly Arrivals and Departures as Line", solidHeader = TRUE, status = "primary", width = 6, plotOutput("hourlyArrivalsandDeparturesLineGraph")
+      ),
+      box(
+        title = "Hourly Arrivals and Departures Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("hourlyArrivalsandDeparturesTable")
+      )
+    ),
+    fluidRow(
+      box(
         title = "Hourly Delays Table", solidHeader = TRUE, status = "primary", width = 4, dataTableOutput("hourlyDelays")
       )
     )
@@ -255,6 +263,54 @@ server <- function(input, output) {
     
     DT::datatable(tempArr)
     
+  })
+  
+  output$hourlyArrivalsandDeparturesTable <- DT::renderDataTable({
+    #not using the same mutate filter function because then it misses some hour rows, can change this later.
+    tempDel <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    tempDel <- filter(tempDel, ORIGIN_AIRPORT_ID == airportID())
+    tempDel <- filter(tempDel, DEP_TIME != "NA")
+    tempDel$HOUR <- hour(ymd_hm(paste(tempDel$FL_DATE, tempDel$DEP_TIME)))
+    tempDel <-as.data.frame(table(factor(tempDel$HOUR, levels = 0:23)))
+    names(tempDel)[1] <- "Hour"
+    names(tempDel)[2] <- 'Departures'
+    
+    tempDel2 <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    tempDel2 <- filter(tempDel2, ORIGIN_AIRPORT_ID == airportID())
+    tempDel2 <- filter(tempDel2, ARR_TIME != "NA")
+    tempDel2$HOUR <- hour(ymd_hm(paste(tempDel2$FL_DATE, tempDel2$ARR_TIME)))
+    tempDel2 <-as.data.frame(table(factor(tempDel2$HOUR, levels = 0:23)))
+    names(tempDel2)[1] <- "Hour"
+    names(tempDel2)[2] <- 'Arrivals'
+    
+    tempDel$Arrivals <- tempDel2$Arrivals
+   
+     DT::datatable(tempDel, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
+    
+  })
+  
+  output$hourlyArrivalsandDeparturesLineGraph <- renderPlot({
+    tempDel <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    tempDel <- filter(tempDel, ORIGIN_AIRPORT_ID == airportID())
+    tempDel <- filter(tempDel, DEP_TIME != "NA")
+    tempDel$HOUR <- hour(ymd_hm(paste(tempDel$FL_DATE, tempDel$DEP_TIME)))
+    tempDel <-as.data.frame(table(factor(tempDel$HOUR, levels = 0:23)))
+    names(tempDel)[1] <- "Hour"
+    names(tempDel)[2] <- 'Departures'
+    
+    tempDel2 <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    tempDel2 <- filter(tempDel2, ORIGIN_AIRPORT_ID == airportID())
+    tempDel2 <- filter(tempDel2, ARR_TIME != "NA")
+    tempDel2$HOUR <- hour(ymd_hm(paste(tempDel2$FL_DATE, tempDel2$ARR_TIME)))
+    tempDel2 <-as.data.frame(table(factor(tempDel2$HOUR, levels = 0:23)))
+    names(tempDel2)[1] <- "Hour"
+    names(tempDel2)[2] <- 'Arrivals'
+    
+    tempDel$Arrivals <- tempDel2$Arrivals
+    
+    ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) +
+     geom_line(aes(y=tempDel$Departures, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
+     scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
   })
   
   output$hourlyDelays <- DT::renderDataTable({
