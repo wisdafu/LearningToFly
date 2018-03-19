@@ -139,6 +139,14 @@ ui <- dashboardPage(
       box(
         title = "Flight count over time", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("carrierArrDepLine")
       )
+    ),
+    fluidRow(
+      box(
+        title = "15 Most Popular Destination Airports", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("top15Dest")
+      ),
+      box(
+        title = "15 Most Popular Arrival Airports", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("top15Arr")
+      )
     )
     
   ) #end dashboardBody
@@ -272,6 +280,36 @@ server <- function(input, output) {
     names(tempDel)[2] <- 'Delays'
     
     DT::datatable(tempDel)
+    
+  })
+  
+  output$top15Dest <- DT::renderDataTable({
+    #15 Arrival and Departure Airports
+    temp <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    temp <- filter(temp, ORIGIN_AIRPORT_ID == airportID())  #Checking Popular Destinations
+    temp <- group_by(temp, DEST_AIRPORT_ID)
+    temp15 <- count(temp, DEST_AIRPORT_ID)
+    names(temp15)[2] <- 'Destinations'
+    names(temp15)[1] <- 'Destination Airports'
+    temp15 <- ungroup(temp15)
+    temp15 <- arrange(temp15, desc(Destinations))
+    
+    DT::datatable(temp15[1:15,])
+    
+  })
+  
+  output$top15Arr <- DT::renderDataTable({
+    #15 Arrival and Departure Airports
+    temp <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    temp <- filter(temp, DEST_AIRPORT_ID == airportID())  #Checking Popular Destinations
+    temp <- group_by(temp, ORIGIN_AIRPORT_ID)
+    temp15 <- count(temp, ORIGIN_AIRPORT_ID)
+    names(temp15)[2] <- 'Arrivals'
+    names(temp15)[1] <- 'Arrival Airports'
+    temp15 <- ungroup(temp15)
+    temp15 <- arrange(temp15, desc(Arrivals))
+    
+    DT::datatable(temp15[1:15,])
     
   })
   
