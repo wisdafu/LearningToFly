@@ -284,51 +284,50 @@ server <- function(input, output) {
     tempDel <- filter(tempDel, DEP_TIME != "NA")
     tempDel$HOUR <- hour(ymd_hm(paste(tempDel$FL_DATE, tempDel$DEP_TIME)))
     tempDel <-as.data.frame(table(factor(tempDel$HOUR, levels = 0:23)))
-    tempDel$Var1 <- format(as.POSIXct(tempDel$Var1, format = "%H"),"%H")
-    tempDel <- mutate(tempDel, Var1 = format(strptime(Var1, "%H"), '%I:%M %p'))
     names(tempDel)[1] <- "Hour"
     names(tempDel)[2] <- 'Departures'
     
     tempDel2 <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
     tempDel2 <- filter(tempDel2, DEST_AIRPORT_ID == airportID())
-    tempDel2 <- filter(tempDel2, DEP_TIME != "NA")
-    tempDel2$HOUR <- hour(ymd_hm(paste(tempDel2$FL_DATE, tempDel2$DEP_TIME)))
+    tempDel2 <- filter(tempDel2, ARR_TIME != "NA")
+    tempDel2$HOUR <- hour(ymd_hm(paste(tempDel2$FL_DATE, tempDel2$ARR_TIME)))
     tempDel2 <-as.data.frame(table(factor(tempDel2$HOUR, levels = 0:23)))
-    tempDel2$Var1 <- format(as.POSIXct(tempDel2$Var1, format = "%H"),"%H")
-    tempDel2 <- mutate(tempDel2, Var1 = format(strptime(Var1,"%H"), '%I:%M %p'))
     names(tempDel2)[1] <- "Hour"
-    names(tempDel2)[2] <- 'Departures'
+    names(tempDel2)[2] <- 'Arrivals'
     
     tempDel$Arrivals <- tempDel2$Arrivals
+    tempDel$Hour<- format(as.POSIXct(tempDel$Hour, format = "%H"),"%H")
+    tempDel$Hour <- mutate(tempDel, Hour = format(strptime(Hour,"%H"), '%I:%M %p'))
     
     DT::datatable(tempDel, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
   })
   
-  output$hourlyArrivalsAndDepartureLineGraph24 <- DT::renderDataTable({
+  output$hourlyArrivalsAndDepartureLineGraph24 <- renderPlot({
     tempDel <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
     tempDel <- filter(tempDel, ORIGIN_AIRPORT_ID == airportID())
     tempDel <- filter(tempDel, DEP_TIME != "NA")
     tempDel$HOUR <- hour(ymd_hm(paste(tempDel$FL_DATE, tempDel$DEP_TIME)))
     tempDel <-as.data.frame(table(factor(tempDel$HOUR, levels = 0:23)))
-    tempDel$Var1 <- format(as.POSIXct(tempDel$Var1, format = "%H"),"%H")
-    tempDel <- mutate(tempDel, Var1 = format(strptime(Var1, "%H"), '%I:%M %p'))
     names(tempDel)[1] <- "Hour"
     names(tempDel)[2] <- 'Departures'
     
     tempDel2 <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
     tempDel2 <- filter(tempDel2, DEST_AIRPORT_ID == airportID())
-    tempDel2 <- filter(tempDel2, DEP_TIME != "NA")
-    tempDel2$HOUR <- hour(ymd_hm(paste(tempDel2$FL_DATE, tempDel2$DEP_TIME)))
+    tempDel2 <- filter(tempDel2, ARR_TIME != "NA")
+    tempDel2$HOUR <- hour(ymd_hm(paste(tempDel2$FL_DATE, tempDel2$ARR_TIME)))
     tempDel2 <-as.data.frame(table(factor(tempDel2$HOUR, levels = 0:23)))
-    tempDel2$Var1 <- format(as.POSIXct(tempDel2$Var1, format = "%H"),"%H")
-    tempDel2 <- mutate(tempDel2, Var1 = format(strptime(Var1,"%H"), '%I:%M %p'))
     names(tempDel2)[1] <- "Hour"
-    names(tempDel2)[2] <- 'Departures'
+    names(tempDel2)[2] <- 'Arrivals'
     
     tempDel$Arrivals <- tempDel2$Arrivals
     
     ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) +
       geom_line(aes(y=tempDel$Departures, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
+      scale_x_discrete(labels=c("0" = "12:00am", "1" = "1:00am", "2" = "2:00am", "3" = "3:00am", "4" = "4:00am", "5" = "5:00am",
+                                "6" = "6:00am", "7" = "7:00am", "8" = "8:00am", "9" = "9:00am", "10" = "10:00am", "11" = "11:00am",
+                                "12" = "12:00:pm", "13" = "1:00pm", "14" = "2:00pm", "15" = "3:00pm", "16" = "4:00pm", "17" = "5:00pm", 
+                                "18" = "6:00pm", "19" = "7:00pm", "20" = "8:00pm", "21" = "9:00pm", "22" = "10:00pm", "23" = "11:00pm")) +
+      theme(axis.text.x = element_text(angle=45)) +
       scale_color_manual(name = "Legend", values = c("blue1", "red2"))  
   })
   
