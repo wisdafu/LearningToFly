@@ -448,6 +448,81 @@ server <- function(input, output) {
     
   })
   
+  output$carrierArrDep12Mon <- DT::renderDataTable({
+    #Arrivals and Departures by Carrier - 12 Months
+    tempArr <- group_by(master, CARRIER)
+    tempArr <- filter(tempArr, ORIGIN_AIRPORT_ID == airportID())
+    tempArr <- count(tempArr, "Carrier")
+    tempArr[2] <- NULL
+    
+    tempDep <- group_by(master, CARRIER)
+    tempDep <- filter(tempDep, DEST_AIRPORT_ID == airportID())
+    tempDep <- count(tempDep, 'Carrier')
+    names(tempArr)[2] <- 'Arrivals'
+    tempArr$Departures <- tempDep$n
+    
+    DT::datatable(tempArr, options = list(pageLength = 10, lengthChange = FALSE, searching = FALSE))
+    
+  })
+  
+  output$hourlyArrDep12Mon <- DT::renderDataTable({
+    #Hourly Arrivals and Departures - 12 Months - 24 Hour
+    tempArr <- filter(master, ORIGIN_AIRPORT_ID == airportID())
+    tempArr <- mutate(tempArr, HOUR = format(as.POSIXct(DEP_TIME, format="%H:%M"),"%H"))
+    val <- sum(is.na(tempArr$DEP_TIME))
+    tempArr <- filter(tempArr, DEP_TIME != "NA")
+    tempArr <- group_by(tempArr, HOUR)
+    tempArr <- count(tempArr, HOUR)
+    names(tempArr)[2] <- 'Delays'
+    
+    DT::datatable(tempArr, options = list(pageLength = 10, lengthChange = FALSE, searching = FALSE))
+    
+  })
+  
+  output$top15Dest12Mon <- DT::renderDataTable({
+    #15 Arrival and Departure Airports
+    temp <- filter(master, ORIGIN_AIRPORT_ID == airportID())  #Checking Popular Destinations
+    temp <- group_by(temp, DEST_AIRPORT_ID)
+    temp15 <- count(temp, DEST_AIRPORT_ID)
+    names(temp15)[2] <- 'Destinations'
+    names(temp15)[1] <- 'Destination Airports'
+    temp15 <- ungroup(temp15)
+    temp15 <- arrange(temp15, desc(Destinations))
+    temp15$`Destination Airports` <- airlineLookup$Description[match(temp15$`Destination Airports`, airlineLookup$Code)]
+    
+    DT::datatable(temp15[1:15,])
+    
+  })
+  
+  output$top15Arr12Mon <- DT::renderDataTable({
+    #15 Arrival and Departure Airports
+    temp <- filter(master, DEST_AIRPORT_ID == airportID())  #Checking Popular Destinations
+    temp <- group_by(temp, ORIGIN_AIRPORT_ID)
+    temp15 <- count(temp, ORIGIN_AIRPORT_ID)
+    names(temp15)[2] <- 'Arrivals'
+    names(temp15)[1] <- 'Arrival Airports'
+    temp15 <- ungroup(temp15)
+    temp15 <- arrange(temp15, desc(Arrivals))
+    temp15$`Arrival Airports` <- airlineLookup$Description[match(temp15$`Arrival Airports`, airlineLookup$Code)]
+    
+    DT::datatable(temp15[1:15,])
+    
+  })
+  
+  output$delays12Mon <- DT::renderDataTable({
+    #Hourly delays chart
+    tempDel <- filter(master, ORIGIN_AIRPORT_ID == airportID())
+    tempDel <- filter(tempDel, CANCELLED == 1)
+    tempDel <- mutate(tempDel, MONTH = format(as.POSIXct(FL_DATE, format="%Y-%m-%d"),"%b"))
+    tempDel <- group_by(tempDel, MONTH)
+    tempDel <- count(tempDel, MONTH)
+    names(tempDel)[2] <- 'Delays'
+    tempDel <- arrange(tempDel, desc(Delays))
+    
+    DT::datatable(tempDel, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
+    
+  })
+  
   # Grade B Plots
   
   
