@@ -113,8 +113,8 @@ ui <- dashboardPage(
       
       # Radio button for the hour setting
       radioButtons('hours', 'Hours:',
-                  c('12 Hr' = 12,
-                    '24 Hr' = 24)             
+                   c('12 Hr' = 12,
+                     '24 Hr' = 24)             
       )
     ) #end sidebarmenu
   ), #end dashboardSidebar
@@ -123,71 +123,68 @@ ui <- dashboardPage(
   dashboardBody(
     tabsetPanel(type = "tabs",
                 tabPanel("1 Month",
-    fluidRow(
-      box(
-        title = "Airline Carrier Flight Counts as Pie", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("carrierArrDepPie")
-      ),
-      box(
-        title = "Airline Carrier Flight Counts as Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("carrierArrDep")
-      )
-    ), #end fluidRow
-    
-    fluidRow(
-      box(
-        title = "Flights by day of the week as Pie", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("daysOfWeekPie")
-      ),
-      box(
-        title = "Flights by day of the week as Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("daysArrDep")
-      )
-    ), #end fluidRow
-    fluidRow(
-      box(
-        title = "Hourly Arrivals and Departures as Line", solidHeader = TRUE, status = "primary", width = 6, plotOutput("hourlyArrivalsandDeparturesLineGraph")
-      ),
-      box(
-        title = "Hourly Arrivals and Departures Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("hourlyArrivalsandDeparturesTable")
-      )
-    ),
-    fluidRow(
-      box(
-        title = "Flight count over time", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("carrierArrDepLine")
-      ),
-      box(
-        title = "Hourly Delays Table", solidHeader = TRUE, status = "primary", width = 4, dataTableOutput("hourlyDelays")
-      )
-    ),
-    fluidRow(
-      box(
-        title = "15 Most Popular Destination Airports", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("top15Dest")
-      ),
-      box(
-        title = "15 Most Popular Arrival Airports", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("top15Arr")
-      )
-    )
-    ),
-    tabPanel("12 Months",
-             fluidRow(
-               box(
-                 title = "Arrivals and Departures by Carrier Over 12 Months", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput('carrierArrDep12Mon')
-               ),
-               box(
-                 title = "Hourly Arrivals and Departures Over 12 Months", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput('hourlyArrDep12Mon')
-               )
-             ),
-             fluidRow(
-               box(
-                 title = "15 Most Popular Destination Airports Over 12 Months", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput('top15Arr12Mon')
-               ),
-               box(
-                 title = "15 Most Popular Destination Airports Over 12 Months", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput('top15Dest12Mon')
-               )
-             ),
-             fluidRow(
-               box(
-                 title = "Delays Over 12 Months", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput('delays12Mon')
-               )
-             )
-    )
+                         fluidRow(
+                           box(
+                             title = "Airline Carrier Flight Counts as Pie", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("carrierArrDepPie")
+                           ),
+                           box(
+                             title = "Airline Carrier Flight Counts as Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("carrierArrDep")
+                           )
+                         ), #end fluidRow
+                         
+                         fluidRow(
+                           box(
+                             title = "Flights by day of the week as Pie", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("daysOfWeekPie")
+                           ),
+                           box(
+                             title = "Flights by day of the week as Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("daysArrDep")
+                           )
+                         ), #end fluidRow
+                         fluidRow(
+                           box(
+                             title = "Hourly Arrivals and Departures as Line", solidHeader = TRUE, status = "primary", width = 6, plotOutput("hourlyArrivalsandDeparturesLineGraph")
+                           ),
+                           box(
+                             title = "Hourly Arrivals and Departures Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("hourlyArrivalsandDeparturesTable")
+                           )
+                         ),
+                         fluidRow(
+                           box(
+                             title = "Hourly Delays Table", solidHeader = TRUE, status = "primary", width = 4, dataTableOutput("hourlyDelays")
+                           )
+                         ),
+                         fluidRow(
+                           box(
+                             title = "15 Most Popular Destination Airports", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("top15Dest")
+                           ),
+                           box(
+                             title = "15 Most Popular Arrival Airports", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("top15Arr")
+                           )
+                         )
+                ),
+                tabPanel("12 Months",
+                         fluidRow(
+                           box(
+                             title = "Arrivals and Departures by Carrier Over 12 Months", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput('carrierArrDep12Mon')
+                           ),
+                           box(
+                             title = "Hourly Arrivals and Departures Over 12 Months", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput('hourlyArrDep12Mon')
+                           )
+                         ),
+                         fluidRow(
+                           box(
+                             title = "15 Most Popular Destination Airports Over 12 Months", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput('top15Arr12Mon')
+                           ),
+                           box(
+                             title = "15 Most Popular Destination Airports Over 12 Months", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput('top15Dest12Mon')
+                           )
+                         ),
+                         fluidRow(
+                           box(
+                             title = "Delays Over 12 Months", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput('delays12Mon')
+                           )
+                         )
+                )
     )   #end of tabset
     
   ) #end dashboardBody
@@ -241,7 +238,7 @@ server <- function(input, output) {
     
     # Get data depending on what is currently selected (Arrival/Departure)
     pieData <- switch(input$arrDepList,
-    "Arrivals" = tempArr, "Departures" = tempDep)
+                      "Arrivals" = tempArr, "Departures" = tempDep)
     
     # Create the actual plot
     plot_ly(pieData, labels = ~pieData$CARRIER, values = ~pieData$n, type = "pie") %>%
@@ -258,14 +255,14 @@ server <- function(input, output) {
     tempArr <- group_by(tempArr, Day)
     tempArr <- count(tempArr, 'Day')
     tempArr[2] <- NULL
-
+    
     tempDep <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
     tempDep <- filter(tempDep, DEST_AIRPORT_ID == airportID())
     tempDep$Day <- weekdays(as.Date(tempDep$FL_DATE))
     tempDep <- group_by(tempDep, Day)
     tempDep <- count(tempDep, 'Day')
     tempDep[2] <- NULL
-
+    
     pieData <- switch(input$arrDepList,
                       "Arrivals" = tempArr, "Departures" = tempDep)
     
@@ -361,19 +358,19 @@ server <- function(input, output) {
     tempDel$Arrivals <- tempDel2$Arrivals
     
     if(hourSetting() == 12){
-    ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) +
-     geom_line(aes(y=tempDel$Departures, color = "Departures")) + labs(x="Hour", y="Number of Flights") + 
-     scale_color_manual(name = "Legend", values = c("deepskyblue", "chocolate1")) 
+      ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) +
+        geom_line(aes(y=tempDel$Departures, color = "Departures")) + labs(x="Hour", y="Number of Flights") + 
+        scale_color_manual(name = "Legend", values = c("deepskyblue", "chocolate1")) 
     }else{
-    ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) +
-      geom_line(aes(y=tempDel$Departures, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
-      scale_x_discrete(labels=c("0" = "12:00am", "1" = "1:00am", "2" = "2:00am", "3" = "3:00am", "4" = "4:00am", "5" = "5:00am",
-                                "6" = "6:00am", "7" = "7:00am", "8" = "8:00am", "9" = "9:00am", "10" = "10:00am", "11" = "11:00am",
-                                "12" = "12:00:pm", "13" = "1:00pm", "14" = "2:00pm", "15" = "3:00pm", "16" = "4:00pm", "17" = "5:00pm", 
-                                "18" = "6:00pm", "19" = "7:00pm", "20" = "8:00pm", "21" = "9:00pm", "22" = "10:00pm", "23" = "11:00pm")) +
-      theme(axis.text.x = element_text(angle=45)) +
-      scale_color_manual(name = "Legend", values = c("deepskyblue", "chocolate1"))  
-  }
+      ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) +
+        geom_line(aes(y=tempDel$Departures, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
+        scale_x_discrete(labels=c("0" = "12:00am", "1" = "1:00am", "2" = "2:00am", "3" = "3:00am", "4" = "4:00am", "5" = "5:00am",
+                                  "6" = "6:00am", "7" = "7:00am", "8" = "8:00am", "9" = "9:00am", "10" = "10:00am", "11" = "11:00am",
+                                  "12" = "12:00:pm", "13" = "1:00pm", "14" = "2:00pm", "15" = "3:00pm", "16" = "4:00pm", "17" = "5:00pm", 
+                                  "18" = "6:00pm", "19" = "7:00pm", "20" = "8:00pm", "21" = "9:00pm", "22" = "10:00pm", "23" = "11:00pm")) +
+        theme(axis.text.x = element_text(angle=45)) +
+        scale_color_manual(name = "Legend", values = c("deepskyblue", "chocolate1"))  
+    }
   })
   
   output$hourlyDelays <- DT::renderDataTable({
@@ -397,7 +394,7 @@ server <- function(input, output) {
     }else{
       tempDel$Hour <- mutate(tempDel, Hour = format(strptime(Hour,"%H"), '%I:%M %p'))
     }
- 
+    
     DT::datatable(tempDel, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
     
   })
@@ -509,33 +506,10 @@ server <- function(input, output) {
     names(tempDel)[2] <- 'Delays'
     tempDel <- arrange(tempDel, desc(Delays))
     
-    DT::datatable(tempDel, options = list(pageLength = 8, lengtChange = FALSE, searching = FALSE))
+    DT::datatable(tempDel, options = list(pageLength = 6, lengthChange = FALSE, searching = FALSE))
     
   })
-  
-  # Grade B Plots
-  
-  
-  # TODO: Create subset of data that has count for each day (e.g. 200 arrival flights on 2017-01-22)
-  #       Then, plot data as a line graph from 2017-01-01 to 2017-12-31
-  
-  output$carrierArrDepLine <- renderPlotly({
-    # Filtering data that will be displayed
-    tempArr <- group_by(master, FL_DATE)
-    tempArr <- filter(tempArr, ORIGIN_AIRPORT_ID == airportID())
-    tempArr[2] <- NULL
-    
-    tempDep <- group_by(master, FL_DATE)
-    tempDep <- filter(tempDep, DEST_AIRPORT_ID == airportID())
-    tempDep[2] <- NULL
-    
-    # Get data depending on what is currently selected (Arrival/Departure)
-    pieData <- switch(input$arrDepList,
-                      "Arrivals" = tempArr, "Departures" = tempDep)
-    
-    # TODO" $DISTANCE is obvi wrong here, just wanted to make sure the graph worked.
-    plot_ly(pieData, x = ~pieData$FL_DATE, y = ~pieData$DISTANCE, type = 'scatter', mode = 'lines')
-  })
+
   
 } #end server
 
