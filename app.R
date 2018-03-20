@@ -361,26 +361,59 @@ server <- function(input, output) {
     tempDel$Arrivals <- tempDel2$Arrivals
     
     if(hourSetting() == 12){
-    ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) +
-     geom_line(aes(y=tempDel$Departures, color = "Departures")) + labs(x="Hour", y="Number of Flights") + 
-     scale_color_manual(name = "Legend", values = c("deepskyblue", "chocolate1")) 
+      
+      data <- data.frame(tempDel$Hour, tempDel$Departures, tempDel$Arrivals)
+      
+      plot_ly(data,x = ~data$tempDel.Hour, y= ~data$tempDel.Departures, name = 'Departures',type = 'scatter', mode = 'lines') %>%
+        add_trace(y = ~data$tempDel.Arrivals, name = 'Arrivals', mode = 'lines') %>%  layout(xaxis = list(title = "Hour"),
+                                                                                             yaxis = list (title = "Number of flights"))
     }else{
-    ggplot(tempDel, aes(x=tempDel$Hour, group = 1)) + geom_line(aes(y=tempDel$Arrivals, color = "Arrivals")) +
-      geom_line(aes(y=tempDel$Departures, color = "Departures")) +  labs(x="Hour", y="Number of Flights") +
-      scale_x_discrete(labels=c("0" = "12:00am", "1" = "1:00am", "2" = "2:00am", "3" = "3:00am", "4" = "4:00am", "5" = "5:00am",
-                                "6" = "6:00am", "7" = "7:00am", "8" = "8:00am", "9" = "9:00am", "10" = "10:00am", "11" = "11:00am",
-                                "12" = "12:00:pm", "13" = "1:00pm", "14" = "2:00pm", "15" = "3:00pm", "16" = "4:00pm", "17" = "5:00pm", 
-                                "18" = "6:00pm", "19" = "7:00pm", "20" = "8:00pm", "21" = "9:00pm", "22" = "10:00pm", "23" = "11:00pm")) +
-      theme(axis.text.x = element_text(angle=45)) +
-      scale_color_manual(name = "Legend", values = c("deepskyblue", "chocolate1"))  
+      
+      tempDel$Hour <- c("12:00an", "1:00am", "2:00am", "3:00am", "4:00am", "5:00am", "6:00am", "7:00am", "8:00am", "9:00am",
+                        "10:00am", "11:00am", "12:00pm", "1:00pm", "2:00pm", "3:00pm", "4:00pm", "5:00pm", "6:00pm",
+                        "7:00pm","8:00pm", "9:00pm", "10:00pm", "11:00pm")
+     
+       data <- data.frame(tempDel$Hour, tempDel$Departures, tempDel$Arrivals)
+      
+      plot_ly(data,x = ~data$tempDel.Hour, y= ~data$tempDel.Departures, name = 'Departures',type = 'scatter', mode = 'lines') %>%
+        add_trace(y = ~data$tempDel.Arrivals, name = 'Arrivals', mode = 'lines') %>%  layout(xaxis = list(title = "Hour",
+                                                                                             tickangle = 45,
+                                                                                             categoryorder = "array", 
+                                                                                             categoryarray = c(tempDel$Hour)),
+                                                                                             yaxis = list (title = "Number of flights"))
   }
+  })
+  
+  output$houryDelaysLine <- renderPlotly({
+    tempDel <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
+    tempDel <- filter(tempDel, ORIGIN_AIRPORT_ID == airportID())
+    tempDel <- filter(tempDel, CARRIER_DELAY != "NA")
+    tempDel <- filter(tempDel, DEP_TIME != "NA")
+    tempDel$HOUR <- hour(ymd_hm(paste(tempDel$FL_DATE, tempDel$DEP_TIME)))
+    tempDel <-as.data.frame(table(factor(tempDel$HOUR, levels = 0:23)))
+    
+    names(tempDel)[1] <- "Hour"
+    names(tempDel)[2] <- 'Delays'
+    tempDel <- filter(tempDel, Delays != 0)
+    
+    #average function found https://stackoverflow.com/questions/24576515/relative-frequencies-proportions-with-dplyr
+    tempDel<- tempDel %>% mutate('Percentage of Total' = paste0(round(100*Delays / sum(Delays), 0), "%"))
+    
+    if(hourSetting() == 12){
+      data <- data.frame(tempDel$Hour, tempDel$Delays)
+      plot_ly(data,x = ~data$tempDel.Hour, y = ~data$tempDel.Delays, name = "Delays", type = "scatter", mode = "lines") %>%
+        layout(xaxis = list(title = "Hour"), yaxis = list(title = "Number of Delays"))
+      
+    }else{
+      tempDel$Hour <- mutate(tempDel, Hour = format(strptime(Hour,"%H"), '%I:%M %p'))
+    }
   })
   
   output$hourlyDelays <- DT::renderDataTable({
     #Hourly delays chart
     tempDel <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
     tempDel <- filter(tempDel, ORIGIN_AIRPORT_ID == airportID())
-    tempDel <- filter(tempDel, CANCELLED == 1)
+    tempDel <- filter(tempDel, CARRIER_DELAY != "NA")
     tempDel <- filter(tempDel, DEP_TIME != "NA")
     tempDel$HOUR <- hour(ymd_hm(paste(tempDel$FL_DATE, tempDel$DEP_TIME)))
     tempDel <-as.data.frame(table(factor(tempDel$HOUR, levels = 0:23)))
