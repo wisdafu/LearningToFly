@@ -341,7 +341,7 @@ server <- function(input, output) {
   })
   
   
-  output$hourlyArrivalsandDeparturesLineGraph <- renderPlot({
+  output$hourlyArrivalsandDeparturesLineGraph <- renderPlotly({
     tempDel <- filter(master, as.numeric(format(FL_DATE, "%m")) == monthNum())  #check month
     tempDel <- filter(tempDel, ORIGIN_AIRPORT_ID == airportID())
     tempDel <- filter(tempDel, DEP_TIME != "NA")
@@ -369,7 +369,7 @@ server <- function(input, output) {
                                                                                              yaxis = list (title = "Number of flights"))
     }else{
       
-      tempDel$Hour <- c("12:00an", "1:00am", "2:00am", "3:00am", "4:00am", "5:00am", "6:00am", "7:00am", "8:00am", "9:00am",
+      tempDel$Hour <- c("12:00am", "1:00am", "2:00am", "3:00am", "4:00am", "5:00am", "6:00am", "7:00am", "8:00am", "9:00am",
                         "10:00am", "11:00am", "12:00pm", "1:00pm", "2:00pm", "3:00pm", "4:00pm", "5:00pm", "6:00pm",
                         "7:00pm","8:00pm", "9:00pm", "10:00pm", "11:00pm")
      
@@ -394,7 +394,7 @@ server <- function(input, output) {
     
     names(tempDel)[1] <- "Hour"
     names(tempDel)[2] <- 'Delays'
-    tempDel <- filter(tempDel, Delays != 0)
+    
     
     #average function found https://stackoverflow.com/questions/24576515/relative-frequencies-proportions-with-dplyr
     tempDel<- tempDel %>% mutate('Percentage of Total' = paste0(round(100*Delays / sum(Delays), 0), "%"))
@@ -405,7 +405,18 @@ server <- function(input, output) {
         layout(xaxis = list(title = "Hour"), yaxis = list(title = "Number of Delays"))
       
     }else{
-      tempDel$Hour <- mutate(tempDel, Hour = format(strptime(Hour,"%H"), '%I:%M %p'))
+      tempDel$Hour <- c("12:00am", "1:00am", "2:00am", "3:00am", "4:00am", "5:00am", "6:00am", "7:00am", "8:00am", "9:00am",
+                        "10:00am", "11:00am", "12:00pm", "1:00pm", "2:00pm", "3:00pm", "4:00pm", "5:00pm", "6:00pm",
+                        "7:00pm","8:00pm", "9:00pm", "10:00pm", "11:00pm")
+      
+      data <- data.frame(tempDel$Hour, tempDel$Delays)
+      
+      plot_ly(data,x = ~data$tempDel.Hour, y = ~data$tempDel.Delays, name = "Delays", type = "scatter", mode = "lines") %>%
+        layout(xaxis = list(title = "Hour",
+                            tickangle = 45,
+                            categoryorder = "array", 
+                            categoryarray = c(tempDel$Hour)), 
+               yaxis = list(title = "Number of Delays"))
     }
   })
   
