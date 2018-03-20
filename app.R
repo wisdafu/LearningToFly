@@ -142,7 +142,7 @@ ui <- dashboardPage(
     ), #end fluidRow
     fluidRow(
       box(
-        title = "Hourly Arrivals and Departures as Line", solidHeader = TRUE, status = "primary", width = 6, plotOutput("hourlyArrivalsandDeparturesLineGraph")
+        title = "Hourly Arrivals and Departures as Line", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("hourlyArrivalsandDeparturesLineGraph")
       ),
       box(
         title = "Hourly Arrivals and Departures Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("hourlyArrivalsandDeparturesTable")
@@ -150,10 +150,10 @@ ui <- dashboardPage(
     ),
     fluidRow(
       box(
-        title = "Flight count over time", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("carrierArrDepLine")
+        title = "Hourly Delays as Line", solidHeader = TRUE, status = "primary", width = 6, plotlyOutput("houryDelaysLine")
       ),
       box(
-        title = "Hourly Delays Table", solidHeader = TRUE, status = "primary", width = 4, dataTableOutput("hourlyDelays")
+        title = "Hourly Delays Table", solidHeader = TRUE, status = "primary", width = 6, dataTableOutput("hourlyDelays")
       )
     ),
     fluidRow(
